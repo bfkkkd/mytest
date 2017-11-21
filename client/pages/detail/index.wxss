@@ -1,0 +1,25 @@
+.demo {
+  padding: 10rpx 30rpx;
+  display: flex;
+}
+.demo__item {
+  flex: 1;
+  height: 90rpx;
+  line-height: 90rpx;
+  vertical-align: middle;
+  padding-left:10px
+}
+
+.userinfo-avatar {
+  width: 90rpx;
+  height: 90rpx;
+  margin-left: 20rpx;
+  border-radius: 50%;
+}
+
+.row-data {
+  padding: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  vertical-align: middle;
+}

@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="demo">
+    <view class="demo__item">
+      <view class="demo__icon zan-badge">
+        <image class="logo" style='border-radius:50%;' src="{{userInfo.avatarUrl || '/images/youke.png'}}">
+  </image>
+        <view class="zan-badge__count demo__icon_checked"> √ </view>
+        <view class="nickname"> {{userInfo.nickName}} </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="zan-panel">
+    <navigator class="zan-cell zan-cell--access" url="/pages/myinfo/index">
+      <view class="zan-cell__bd">个人信息</view>
+      <view class="zan-cell__ft"></view>
+    </navigator>
+  </view>
+  <view class="zan-panel">
+    <navigator class="zan-cell zan-cell--access" url="/pages/myact/index">
+      <view class="zan-cell__bd">我的发起</view>
+      <view class="zan-cell__ft"></view>
+    </navigator>
+  </view>
+  <view class="zan-panel">
+    <navigator class="zan-cell zan-cell--access" url="/pages/about/index">
+      <view class="zan-cell__bd">关于</view>
+      <view class="zan-cell__ft"></view>
+    </navigator>
+  </view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--access">
+      <view class="zan-cell__bd">
+      <button  style="color:#1aad16; font-size:35rpx;" open-type="contact" session-from="weapp">
+      联系客服
+      </button>
+      </view>
+    </view>
+  </view>
+  
+</view>

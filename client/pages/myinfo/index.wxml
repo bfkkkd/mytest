@@ -1,0 +1,65 @@
+<import src="/common/field/index.wxml" />
+<import src="/dist/switch/index.wxml" />
+<import src="/dist/toptips/index.wxml" />
+<import src="/dist/toast/index.wxml" />
+<view class="container">
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>
+  <view class="doc-title">
+    <view class="zan-cell__icon zan-icon zan-icon-setting" style="font-size: 60rpx; color: cornflowerblue"></view>设置
+  </view>
+  <view class="zan-panel-title">
+    个人信息
+    <view wx:if="{{pending === true}}" class="zan-cell__icon zan-icon zan-icon-edit-data" style="font-size: 35rpx; color:red">...</view>
+    <view wx:elif="{{pending === false}}" class="zan-cell__icon zan-icon zan-icon-certificate" style="font-size: 35rpx; color:green"></view>
+      </view>
+        <view class="zan-panel">
+    <template is="zan-field" data="{{ title: '称呼', type: 'input', placeholder: '联系用的称呼', maxlength:10, componentId:'real_name', value:inputData.real_name }}"></template>
+    <template is="zan-field" data="{{ title: '联系电话', type: 'input', inputType: 'number', placeholder: '请输入手机号', error: true, maxlength:11, componentId:'phone', value:inputData.phone   }}"></template>
+    <view class="zan-cell zan-field" style='width:250px'>
+      <view class="zan-cell__hd zan-field__title">楼栋号</view>
+      <picker
+        mode="selector"
+        id="building"
+        class="zan-field__input zan-cell__bd"
+        style="text-align: center"
+        range="{{ buildings }}"
+        value="{{ inputData.building }}"
+        bindchange="onAddressChange"
+      >
+       {{ buildings[inputData.building] }}栋
+      </picker>
+      <picker
+        mode="selector"
+        id="floor"
+        class="zan-field__input zan-cell__bd" 
+        style="text-align: center" 
+        range="{{ floors }}"
+        value="{{ inputData.floor }}"
+        bindchange="onAddressChange"
+      >
+      {{ floors[inputData.floor] }}层
+      </picker>
+      <picker
+        mode="selector"
+        id="unit"
+        class="zan-field__input zan-cell__bd" 
+        style="text-align: center" 
+        range="{{ units }}"
+        value="{{ inputData.unit }}"
+        bindchange="onAddressChange"
+      >
+      {{ units[inputData.unit] }}单元
+      </picker>
+    </view>
+  </view>
+
+  <view class="zan-panel-title">系统设置</view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--switch">
+      <view class="zan-cell__bd">是否公开</view>
+      <view class="zan-cell__ft">
+        <template is="zan-switch" data="{{ checked : inputData.published ,componentId:'published', disabled:false, loading:false }}"/>
+      </view>
+    </view>
+</view>
+</view>

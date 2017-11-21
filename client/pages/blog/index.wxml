@@ -1,0 +1,15 @@
+<import src="../../dist/loadmore/index.wxml" />
+<view class="container">
+
+  <view class="doc-title">活动列表</view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--access" wx:for="{{items}}" wx:key="id" wx:for-index="idx" wx:for-item="item">
+      <view class="zan-cell__bd">
+      {{item.title}} ({{item.memberCount}})</view>
+      <button wx:if="{{pending == item.id}}" class="zan-btn zan-btn--mini zan-btn--plain zan-btn--loading">加入中</button>
+      <button wx:else bindtap="doActivity" data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--{{ item.joined ? 'primary' : 'warn'}} zan-btn--plain" >{{ item.joined ? '已加入' : '未加入'}}</button>
+      <view class="zan-cell__ft"></view>
+    </view>
+  </view>
+
+</view>

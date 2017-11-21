@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="doc-title" style='height:50rpx'>{{item.title}}</view>
+  <view class="zan-panel-title" style='height:90rpx'>
+  <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+  {{item.user_info.nickName}} 发起
+  <view style = "float:right">
+  <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加入中</button>
+      <button wx:else bindtap="doActivity" data-id="{{item.id}}" class="zan-btn zan-btn--small zan-btn--{{ item.joined ? 'primary' : 'warn'}} zan-btn--plain" >{{ item.joined ? '已加入' : '未加入'}}</button>
+  </view>
+  </view>
+  <view class="zan-panel" >
+    <view class="row-data">
+      <view class="zan-font-12">
+        截止日期：{{item.end_time}}
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{item.description}}" class="zan-panel">
+    <view class="row-data">
+      <view class="zan-font-12">
+        内容：{{item.description}}
+      </view>
+    </view>
+  </view>
+  <view class="zan-panel-title">参与人：({{item.members.length}})</view>
+  <view class="demo">
+      <image wx:for="{{item.members}}" wx:key="id" wx:for-index="idx" wx:for-item="member"class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+  </view>
+
+</view>

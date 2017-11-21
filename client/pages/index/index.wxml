@@ -1,0 +1,30 @@
+<import src="../../dist/loadmore/index.wxml" />
+
+<view class="container">
+  <view class="zan-panel-title title-bg">活动列表
+  <view class="zan-icon zan-icon-checked"  style="font-size: 20px; color: #ff4343;"></view>
+  </view>
+  <template wx:if="{{loading}}" is="zan-loadmore" data="{{loading: true}}" />
+  <view class="zan-panel">
+    <view class="zan-cell" wx:for="{{items}}" wx:key="id" wx:for-index="idx" wx:for-item="item">
+      <view class="zan-cell__bd" bindtap="openDetail" data-id="{{item.id}}">
+        <view class="zan-cell__text">{{item.title}}</view>
+        <view class="zan-cell__desc" style="display: flex; height:45rpx;align-items:center;">
+          <view>
+          <view class="zan-icon zan-icon-contact" style="font-size: 30rpx; color:cornflowerblue"></view>
+          ({{memberCount[item.id] || '0'}})
+          </view>
+          <view class="avatar-cell" style="display: flex; flex-direction: row-reverse;">
+          <image wx:for="{{activityMembers[item.id]}}" wx:key="nickName" wx:for-index="idx" wx:for-item="item" class="userinfo-avatar" src="{{item.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+          </view>
+        </view>
+      </view>
+      <view class="zan-cell__ft">
+      <button wx:if="{{pending == item.id}}" class="zan-btn zan-btn--mini zan-btn--plain zan-btn--loading">加入中</button>
+      <button wx:else bindtap="doActivity" data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--{{ joinedCount[item.id] ? 'primary' : 'warn'}} zan-btn--plain" >{{ joinedCount[item.id] ? '已加入' : '未加入'}}</button>
+      </view>
+    </view>
+  </view>
+  <template wx:if="{{loadingMore}}" is="zan-loadmore" data="{{loading: true}}" />
+
+</view>

@@ -1,0 +1,30 @@
+.logo {
+  width: 200rpx;
+  height: 200rpx;
+}
+.demo {
+  padding: 60rpx 0 70rpx 0 ;
+  display: flex;
+}
+.demo__item {
+  flex: 1;
+}
+.demo__icon {
+  margin: 0 auto;
+  width: 200rpx;
+  height: 200rpx;
+  background: #ddd;
+  border-radius: 50px;
+}
+
+.demo__icon_checked {
+  top:150rpx;
+  right: 20rpx;
+  font-size:30rpx;
+}
+
+.nickname {
+  text-align: center;
+  top:150rpx;
+  font-size:35rpx;
+}

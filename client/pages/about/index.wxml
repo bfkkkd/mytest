@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="doc-title">关于我们</view>
+  <view class="zan-panel">
+    <view class="zan-cell">
+      <view class="zan-cell__icon zan-icon zan-icon-location" style="font-size: 60rpx; color: cornflowerblue"></view>
+      <view class="zan-cell__bd">广州，佛山</view>
+    </view>
+  </view>
+  <view class="zan-panel">
+    <view class="zan-cell">
+      <view class="zan-cell__icon zan-icon zan-icon-free-postage" style="font-size: 60rpx; color: cornflowerblue"></view>
+      <view class="zan-cell__bd">yournana@qq.com</view>
+    </view>
+  </view>
+</view>

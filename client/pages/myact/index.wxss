@@ -1,0 +1,10 @@
+.userinfo-avatar {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: -8rpx;
+  border-radius: 50%;
+}
+
+.avatar-cell {
+  padding-left: 20rpx
+}

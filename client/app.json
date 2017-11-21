@@ -1,0 +1,45 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/detail/index",
+        "pages/new/index",
+        "pages/mine/index",
+        "pages/myact/index",
+        "pages/myinfo/index",
+        "pages/about/index",
+        "pages/chat/chat",
+        "pages/blog/index"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#333",
+        "navigationBarTitleText": "丰富的富丰",
+        "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+      "backgroundColor": "#fff",
+      "color": "#2c2c2c",
+      "borderStyle": "white",
+      "selectedColor": "#5f1971",
+      "list": [
+        {
+          "pagePath": "pages/index/index",
+          "text": "首页",
+          "iconPath": "images/icon-main1.png",
+          "selectedIconPath": "images/icon-main2.png"
+        },
+        {
+          "pagePath": "pages/new/index",
+          "text": "新建",
+          "iconPath": "images/icon-add1.png",
+          "selectedIconPath": "images/icon-add2.png"
+        },
+        {
+          "pagePath": "pages/mine/index",
+          "text": "我的",
+          "iconPath": "images/icon-mine1.png",
+          "selectedIconPath": "images/icon-mine2.png"
+        }
+      ]
+    }
+}

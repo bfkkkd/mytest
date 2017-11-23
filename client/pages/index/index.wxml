@@ -20,9 +20,11 @@
         </view>
       </view>
       <view class="zan-cell__ft">
+      <form report-submit="true" bindsubmit="doActivity">
       <button wx:if="{{pending == item.id}}" class="zan-btn zan-btn--mini zan-btn--plain zan-btn--loading">加入中</button>
-      <button wx:else bindtap="doActivity" data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--{{ joinedCount[item.id] ? 'primary' : 'warn'}} zan-btn--plain" >{{ joinedCount[item.id] ? '已加入' : '未加入'}}</button>
-      </view>
+      <button form-type="submit" wx:else data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--{{ joinedCount[item.id] ? 'primary' : 'warn'}} zan-btn--plain" >{{ joinedCount[item.id] ? '已加入' : '未加入'}}</button>
+      </form>
+      </view>    
     </view>
   </view>
   <template wx:if="{{loadingMore}}" is="zan-loadmore" data="{{loading: true}}" />

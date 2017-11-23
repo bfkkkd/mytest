@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="doc-title" style='height:50rpx'>{{item.title}}</view>
+  <view class="doc-title" style='min-height:50rpx'>{{item.title}}</view>
   <view class="zan-panel-title" style='height:90rpx'>
   <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   {{item.user_info.nickName}} 发起

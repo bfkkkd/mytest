@@ -3,9 +3,20 @@
 	"svr": "./server",
 	"appid": "wx535154afcda10e53",
 	"projectname": "wafer",
+	"setting": {
+		"newFeature": true
+	},
 	"condition": {
-		"weapp": {
-			"current": 0,
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
 			"list": [
 				{
 					"id": 0,
@@ -14,14 +25,6 @@
 					"query": "id=2"
 				}
 			]
-		},
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
 		}
 	}
 }

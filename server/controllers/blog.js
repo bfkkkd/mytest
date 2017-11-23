@@ -18,11 +18,12 @@ async function newCustomerInfo(userinfo) {
   })
 }
 
-async function getActivitis(start = 0) {
+async function getActivitis(type_id = 1,start = 0) {
   return mysql('activity')
   .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
   .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info')
-  .where('activity.id', '<', start)
+  .where('activity.type_id', type_id)
+  .andWhere('activity.id', '<', start)
   .orderBy('id', 'desc')
   .limit(20)
 }
@@ -30,7 +31,8 @@ async function getActivitis(start = 0) {
 async function getMyActivitis(open_id) {
   return mysql('activity')
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
-    .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info')
+    .join('activityType', 'activityType.id', 'activity.type_id')
+    .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id', 'activityType.name AS type_name')
     .where('activity.open_id', open_id)
     .orderBy('id', 'desc')
     .limit(20)
@@ -39,7 +41,8 @@ async function getMyActivitis(open_id) {
 async function getActivityDetail(activityId) {
   return mysql('activity')
       .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
-      .select('activity.id', 'activity.title', 'activity.description', 'activity.start_time', 'activity.end_time', 'activity.open_id', 'cSessionInfo.user_info')
+      .join('activityType', 'activityType.id', 'activity.type_id')
+      .select('activity.id', 'activity.title', 'activity.description', 'activity.start_time', 'activity.end_time', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id', 'activityType.name AS type_name')
       .where('activity.id', activityId)
       .first()
 }
@@ -78,9 +81,10 @@ async function get(ctx, next) {
   const open_id = ctx.state.$wxInfo.userinfo.openId
   ctx.state.code = '0'
   if (act == 'getActivity') {
-    var { start } = ctx.query
+    var { start, type_id } = ctx.query
     start = Number(start)
-    let activityRows = await getActivitis(start)
+    type_id = Number(type_id)
+    let activityRows = await getActivitis(type_id, start)
     let activityIdArray = []
     let memberCount = {}
     let joinedCount = {}

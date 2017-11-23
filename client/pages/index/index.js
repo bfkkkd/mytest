@@ -16,7 +16,8 @@ Page({
     loadingMore: false,
     hasMore: true,
     lastId:0,
-    userinfo : {}
+    userinfo : {},
+    type_id :1
   },
 
   getActivityMembers: function (ids) {
@@ -61,6 +62,7 @@ Page({
 
       data: {
         act: 'getActivity',
+        type_id: this.data.type_id,
         start: start
       },
 
@@ -135,8 +137,9 @@ Page({
     if (this.data.pending != 0) return
 
     let that = this
-    let id = e.currentTarget.dataset.id
-    let idx = e.currentTarget.dataset.idx
+    let id = e.detail.target.dataset.id
+    let idx = e.detail.target.dataset.idx
+    let formId = e.detail.formId
     let memberCount = this.data.memberCount;
     let joinedCount = this.data.joinedCount;
     joinedCount[id] = !joinedCount[id];
@@ -152,6 +155,7 @@ Page({
       data: {
         act: 'join',
         activity_id: id,
+        form_id: formId,
         join: joinedCount[id]
       },
 

@@ -28,17 +28,17 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
     let buildings = []
     let floors = []
     let units = []
-    buildings[0] = '-'
-    floors[0] = '-'
-    units[0] = '-'
+    buildings[0] = '？栋'
+    floors[0] = '？层'
+    units[0] = '？单'
     for (let i=0; i<20; i++) {
-      buildings[i+1] = i + 1
+      buildings[i+1] = (i + 1) + "栋"
     }
     for (let i = 0; i < 32; i++) {
-      floors[i+1] = i + 1
+      floors[i + 1] = (i + 1) + "层"
     }
     for (let i = 0; i < 6; i++) {
-      units[i+1] = i + 1
+      units[i + 1] = "0" + (i + 1) + "单元"
     }
 
     this.setData({
@@ -63,6 +63,14 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
 
       success(result) {
         let inputData = that.data.inputData
+        let resultData = result.data.data
+        resultData['buildingIndex'] = resultData['building']
+        resultData['floorIndex'] = resultData['floor']
+        resultData['unitIndex'] = resultData['unit']
+        resultData['building'] = that.data['buildings'][resultData['buildingIndex']]
+        resultData['floor'] = that.data['floors'][resultData['floorIndex']]
+        resultData['unit'] = that.data['units'][resultData['unitIndex']]
+
         Object.assign(inputData,result.data.data)
         that.setData({
           inputData: inputData,
@@ -117,6 +125,31 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
         console.log('request complete');
       }
     })
+  },
+
+  bindMultiPickerChange(e) {
+    console.log(e)
+    let inputData = this.data.inputData
+    let tmpdata = e.detail.value
+    let buildingIndex = tmpdata[0]
+    let floorIndex = tmpdata[1]
+    let unitIndex = tmpdata[2]
+    
+    inputData['building'] = this.data['buildings'][buildingIndex]
+    inputData["buildingIndex"] = buildingIndex
+    inputData['floor'] = this.data['floors'][floorIndex]
+    inputData["floorIndex"] = floorIndex
+    inputData['unit'] = this.data['units'][unitIndex]
+    inputData["unitIndex"] = unitIndex
+    this.setCustomerInfo('address', {
+      building : inputData['building'],
+      floor: inputData['floor'],
+      unit: inputData['unit'],
+    })
+    console.log(inputData)
+    this.setData({
+      inputData: inputData
+    });
   },
 
   onAddressChange(e) {

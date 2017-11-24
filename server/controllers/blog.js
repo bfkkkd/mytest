@@ -1,77 +1,8 @@
 const { mysql,message: { checkSignature } } = require('../qcloud')
+const activityObject = require('../lib/activity.js')
+const memberObject = require('../lib/member.js')
+const msgTemplate = require('../lib/msgTemplate.js')
 
-async function getCustomerInfo(open_id) {
-  return mysql('customerInfo')
-    .select('real_name', 'phone', 'phone', 'building', 'floor', 'unit', 'verified', 'published')
-    .where('open_id', open_id).first()
-}
-
-async function setCustomerInfo(open_id, field, value) {
-  let updateData = {}
-  updateData[field] = value
-  return mysql('customerInfo').update(updateData).where('open_id', open_id)
-}
-
-async function newCustomerInfo(userinfo) {
-  return mysql('customerInfo').insert({
-    open_id: userinfo.openId, real_name: userinfo.nickName
-  })
-}
-
-async function getActivitis(type_id = 1,start = 0) {
-  return mysql('activity')
-  .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
-  .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info')
-  .where('activity.type_id', type_id)
-  .andWhere('activity.id', '<', start)
-  .orderBy('id', 'desc')
-  .limit(20)
-}
-
-async function getMyActivitis(open_id) {
-  return mysql('activity')
-    .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
-    .join('activityType', 'activityType.id', 'activity.type_id')
-    .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id', 'activityType.name AS type_name')
-    .where('activity.open_id', open_id)
-    .orderBy('id', 'desc')
-    .limit(20)
-}
-
-async function getActivityDetail(activityId) {
-  return mysql('activity')
-      .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
-      .join('activityType', 'activityType.id', 'activity.type_id')
-      .select('activity.id', 'activity.title', 'activity.description', 'activity.start_time', 'activity.end_time', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id', 'activityType.name AS type_name')
-      .where('activity.id', activityId)
-      .first()
-}
-
-async function getMemberCount(activityIdArray) {
-  return mysql('activityMember')
-  .select('activity_id')
-  .count('open_id as count')
-  .whereIn('activity_id', activityIdArray)
-  .groupBy('activity_id')
-
-}
-
-async function getActivityMembers(activityId, limit=20) {
-  return mysql('activityMember')
-    .join('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
-    .select('cSessionInfo.open_id', 'cSessionInfo.user_info')
-    .where('activityMember.activity_id', activityId).limit(limit)
-
-}
-
-async function getJoined(activityIdArray, openId) {
-  return mysql('activityMember')
-    .select('activity_id')
-    .count('open_id as joined')
-    .whereIn('activity_id', activityIdArray)
-    .andWhere('open_id', openId)
-    .groupBy('activity_id')
-}
 
 /**
  * 响应 GET 请求（响应微信配置时的签名检查请求）
@@ -84,7 +15,7 @@ async function get(ctx, next) {
     var { start, type_id } = ctx.query
     start = Number(start)
     type_id = Number(type_id)
-    let activityRows = await getActivitis(type_id, start)
+    let activityRows = await activityObject.getActivitis(type_id, start)
     let activityIdArray = []
     let memberCount = {}
     let joinedCount = {}
@@ -98,8 +29,8 @@ async function get(ctx, next) {
       }
     }
     
-    memberCount = await getMemberCount(activityIdArray)
-    joinedCount = await getJoined(activityIdArray, open_id)
+    memberCount = await activityObject.getMemberCount(activityIdArray)
+    joinedCount = await activityObject.getJoined(activityIdArray, open_id)
     ctx.state.data = {
       'activityRows': activityRows,
       'memberCount': memberCount,
@@ -107,7 +38,7 @@ async function get(ctx, next) {
     }
 
   } else if (act == 'getMyActivity') {
-    let activityRows = await getMyActivitis(open_id)
+    let activityRows = await activityObject.getMyActivitis(open_id)
     let activityIdArray = []
     let memberCount = {}
     let joinedCount = {}
@@ -121,8 +52,8 @@ async function get(ctx, next) {
       }
     }
 
-    memberCount = await getMemberCount(activityIdArray)
-    joinedCount = await getJoined(activityIdArray, open_id)
+    memberCount = await activityObject.getMemberCount(activityIdArray)
+    joinedCount = await activityObject.getJoined(activityIdArray, open_id)
     ctx.state.data = {
       'activityRows': activityRows,
       'memberCount': memberCount,
@@ -138,7 +69,7 @@ async function get(ctx, next) {
       for (let i = 0; i < activityIds.length; i++) {
         let activityId = Number(activityIds[i])
         let tmpMember = {}
-        member = await getActivityMembers((activityId))
+        member = await activityObject.getActivityMembers((activityId))
         tmpMember.activityId = activityId
         tmpMember.memberData = []
         member.forEach(function (item, index) {
@@ -156,50 +87,50 @@ async function get(ctx, next) {
       ctx.state.data = members
 
   } else if (act == 'join') {
-    var { activity_id,join } = ctx.query
+    var { activity_id,join,form_id } = ctx.query
     activity_id = Number(activity_id)
     const remark = ''
     if (join == 'true') {
-      ctx.state.data = await mysql('activityMember')
-        .count('open_id as count')
-        .where('open_id', open_id)
-        .andWhere('activity_id', activity_id)
-        .then(res => {
-          // 如果存在用户则更新
-          if (res[0].count) {
-            return true
-          } else {
-            return mysql('activityMember').insert({
-              activity_id, open_id, remark
-            })
-          }
+      let returnData = {
+        activity_id: activity_id,
+        open_id: open_id,
+        act: 'join',
+        state : 0,
+        sendMsg : 0,
+      }
+
+      activityCount = await activityObject.getJoinedCount(activity_id, open_id)
+      if (!activityCount.count) {
+        await mysql('activityMember').insert({
+          activity_id, open_id, remark
         })
-        .then(() => ({
-          activity_id: activity_id,
-          open_id: open_id,
-          act: 'join'
-        }))
+        returnData.state = 1
+      }
+
+      if (returnData.state) {
+        let activityItem = await activityObject.getActivityDetail(activity_id)
+        let memberItem = await memberObject.getCustomerInfo(activityItem.open_id)
+        returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem })
+      }
+
+      ctx.state.data = returnData
+
     } else {
-      ctx.state.data = await mysql('activityMember')
-        .count('open_id as count')
-        .where('open_id', open_id)
-        .andWhere('activity_id', activity_id)
-        .then(res => {
-          // 如果存在用户则更新
-          if (res[0].count) {
-            return mysql('activityMember')
-              .where('open_id', open_id)
-              .andWhere('activity_id', activity_id)
-              .del()
-          } else {
-            return true
-          }
-        })
-        .then(() => ({
-          activity_id: activity_id,
-          open_id: open_id,
-          act : 'del'
-        }))
+      let returnData = {
+        activity_id: activity_id,
+        open_id: open_id,
+        act: 'del',
+        state: 0,
+      }
+      activityCount = await activityObject.getJoinedCount(activity_id, open_id)
+      if (activityCount.count) {
+        await mysql('activityMember')
+          .where('open_id', open_id)
+          .andWhere('activity_id', activity_id)
+          .del()
+        returnData.state = 1
+      }
+      ctx.state.data = returnData
 
     }
     
@@ -207,24 +138,13 @@ async function get(ctx, next) {
   } else if (act == 'del') { 
     var { activity_id } = ctx.query
     activity_id = Number(activity_id)
-    ctx.state.data = await mysql('activityMember')
-      .where('activity_id', activity_id)
-      .andWhere('open_id', open_id)
-      .del()
-      .then(function (res) {
-        return mysql('activity')
-          .where('id', activity_id)
-          .andWhere('open_id', open_id)
-          .del()
-      }).then((res) => {
-        return res
-      })
+    ctx.state.data = await activityObject.del(activity_id, open_id)
 
   } else if (act == 'getActivityDetail') {
     var { activity_id } = ctx.query
     activity_id = Number(activity_id)
-    let item = await getActivityDetail(activity_id)
-    item.members = await getActivityMembers(activity_id, 20)
+    let item = await activityObject.getActivityDetail(activity_id)
+    item.members = await activityObject.getActivityMembers(activity_id, 20)
 
     item.joined = 0 
     item.user_info = JSON.parse(item.user_info)
@@ -240,44 +160,24 @@ async function get(ctx, next) {
     }
     ctx.state.data =  item
 
-  } else if (act == 'getActivityDetail') {
-    var { activity_id } = ctx.query
-    activity_id = Number(activity_id)
-    let item = await getActivityDetail(activity_id)
-    item.members = await getActivityMembers(activity_id, 20)
-
-    item.joined = 0 
-    item.user_info = JSON.parse(item.user_info)
-
-    if (item.members.length > 0) {
-      for (let i = 0; i < item.members.length; i++) {
-        item.members[i].user_info = JSON.parse(item.members[i].user_info)
-        if (item.members[i].open_id == open_id) {
-          item.joined = 1
-        }
-      }
-
-    }
-    ctx.state.data =  item
-
-  
-  
   } else if (act == 'getCustomerInfo') {
-    let customerInfo = await getCustomerInfo(open_id)
+    let customerInfo = await memberObject.getCustomerInfo(open_id)
     .then(res =>{
       if (!res) {
-        return newCustomerInfo(ctx.state.$wxInfo.userinfo)
+        return memberObject.newCustomerInfo(ctx.state.$wxInfo.userinfo)
       } else {
         return res
       }
     }).then(res => {
       if (res) {
-        return getCustomerInfo(open_id)
+        return memberObject.getCustomerInfo(open_id)
       } else {
         return false
       }
     })
     ctx.state.data = customerInfo
+  } else if (act == 'getActivityTypes') {
+    ctx.state.data = await activityObject.getActivityTypes()
   } else {
     ctx.state.data = act
   }
@@ -310,7 +210,7 @@ async function post(ctx, next) {
   } else if (act == 'setCustomerInfo') {
     var { field, value } = ctx.request.body
     if (field == 'real_name' || field == 'phone' || field == 'building' || field == 'floor' || field == 'unit' || field == 'published') {
-      ctx.state.data = await setCustomerInfo(open_id, field, value) 
+      ctx.state.data = await memberObject.setCustomerInfo(open_id, field, value) 
     }
   }else {
     ctx.state.data = act

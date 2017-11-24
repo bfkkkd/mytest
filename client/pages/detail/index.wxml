@@ -4,8 +4,10 @@
   <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   {{item.user_info.nickName}} 发起
   <view style = "float:right">
-  <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加入中</button>
-      <button wx:else bindtap="doActivity" data-id="{{item.id}}" class="zan-btn zan-btn--small zan-btn--{{ item.joined ? 'primary' : 'warn'}} zan-btn--plain" >{{ item.joined ? '已加入' : '未加入'}}</button>
+  <form report-submit="true" bindsubmit="doActivity">
+    <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加入中</button>
+    <button form-type="submit" wx:else data-id="{{item.id}}" class="zan-btn zan-btn--small zan-btn--{{ item.joined ? 'primary' : 'warn'}} zan-btn--plain" >{{ item.joined ? '已加入' : '未加入'}}</button>
+  </form>
   </view>
   </view>
   <view class="zan-panel" >

@@ -13,16 +13,18 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     errTipShow: false,
     errTxt: '',
     btnLoad: false,
-    btnDisabled: false
+    btnDisabled: false,
+    types:[]
   },
 
   onLoad(option) {
+    this.getActivityTypes()
     this.initdefault()
   },
 
   initdefault() {
     let currDay = new Date();
-    currDay.setHours(currDay.getHours() + 1);
+    currDay.setDate(currDay.getDate() + 1);  
     let year = currDay.getFullYear();
     let day = util.formatDay(currDay, "-");
     //let time = util.formatTime(currDay, ":");
@@ -35,9 +37,47 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     inputData.time = time
     inputData.title = ''
     inputData.description = ''
+    inputData.type_id = 0
+    inputData.type_idx = 0
     this.setData({
       inputData: inputData,
       endDate: endDate
+    });
+  },
+
+  getActivityTypes() {
+    var that = this
+    qcloud.request({
+      // 要请求的地址
+      url: config.service.blogUrl,
+
+      data: {
+        act: 'getActivityTypes'
+      },
+
+      // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+      login: true,
+
+      success(result) {
+        let inputData = that.data.inputData
+        inputData.type_idx = result.data.data[0].id
+        that.setData({
+          types: result.data.data
+        });
+
+        console.log('request success', result);
+      }
+    })
+  },
+
+  onTypeChange(e) {
+    console.log(e)
+    var inputData = this.data.inputData
+    inputData.type_idx = e.detail.value
+    inputData.type_id = this.data.types[e.detail.value].id || 0
+
+    this.setData({
+      inputData: inputData
     });
   },
 
@@ -64,6 +104,9 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     let inputData = this.data.inputData
     if (inputData.title === '') {
       this.showTopTips("标题不能为空！❤️");
+      return flag = false;
+    } else if (inputData.type_id < 1) {
+      this.showTopTips("请选择服务类别！❤️");
       return flag = false;
     }
     return flag;
@@ -100,6 +143,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
       data: {
         act: 'save',
         title: data.title,
+        type_id: data.type_id,
         date: data.date + ' ' + data.time,
         description : data.description
       },

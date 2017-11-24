@@ -17,39 +17,12 @@
     <template is="zan-field" data="{{ title: '联系电话', type: 'input', inputType: 'number', placeholder: '请输入手机号', error: true, maxlength:11, componentId:'phone', value:inputData.phone   }}"></template>
     <view class="zan-cell zan-field" style='width:250px'>
       <view class="zan-cell__hd zan-field__title">楼栋号</view>
-      <picker
-        mode="selector"
-        id="building"
-        class="zan-field__input zan-cell__bd"
-        style="text-align: center"
-        range="{{ buildings }}"
-        value="{{ inputData.building }}"
-        bindchange="onAddressChange"
-      >
-       {{ buildings[inputData.building] }}栋
-      </picker>
-      <picker
-        mode="selector"
-        id="floor"
-        class="zan-field__input zan-cell__bd" 
-        style="text-align: center" 
-        range="{{ floors }}"
-        value="{{ inputData.floor }}"
-        bindchange="onAddressChange"
-      >
-      {{ floors[inputData.floor] }}层
-      </picker>
-      <picker
-        mode="selector"
-        id="unit"
-        class="zan-field__input zan-cell__bd" 
-        style="text-align: center" 
-        range="{{ units }}"
-        value="{{ inputData.unit }}"
-        bindchange="onAddressChange"
-      >
-      {{ units[inputData.unit] }}单元
-      </picker>
+      <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{[inputData.building,inputData.floor,inputData.unit]}}" range="{{[buildings,floors,units]}}">
+    <view class="picker">
+      当前选择： {{ buildings[inputData.buildingIndex] }} {{ floors[inputData.floorIndex] }} {{ units[inputData.unitIndex] }}
+    </view>
+  </picker>
+      
     </view>
   </view>
 

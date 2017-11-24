@@ -51,7 +51,7 @@ Page({
     if (this.data.pending != 0) return
 
     var that = this
-    var id = e.target.dataset.id
+    let formId = e.detail.formId
     var item = this.data.item
     item.joined = !item.joined;
 
@@ -66,6 +66,7 @@ Page({
       data: {
         act: 'join',
         activity_id: item.id,
+        form_id: formId,
         join: item.joined
       },
 

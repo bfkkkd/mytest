@@ -1,10 +1,11 @@
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var Zan = require('../../dist/index');
 
 // 引入配置
 var config = require('../../config');
 
-Page({
+Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   data: {
     message: '',
     items:[],
@@ -17,7 +18,11 @@ Page({
     hasMore: true,
     lastId:0,
     userinfo : {},
-    type_id :1
+    types:{
+      selectedId: 0,
+      scroll: false,
+    },
+    type_id :0
   },
 
   getActivityMembers: function (ids) {
@@ -53,9 +58,9 @@ Page({
     })
   },
 
-  getActivity: function() {
+  getActivity: function (reload = false) {
     var that = this
-    let start = this.data.lastId > 0 ? this.data.lastId : 9999999
+    let start = reload ? 9999999 : (this.data.lastId > 0 ? this.data.lastId : 9999999)
     qcloud.request({
       // 要请求的地址
       url: config.service.blogUrl,
@@ -71,8 +76,8 @@ Page({
 
       success(result) {
         let activityIds = []
-        let reJoinedCount = that.data.joinedCount
-        let items = that.data.items
+        let reJoinedCount = reload ? [] : that.data.joinedCount
+        let items = reload? [] : that.data.items
 
         result.data.data.activityRows.forEach(function (item, index) {
           activityIds.push(item.id)
@@ -106,6 +111,38 @@ Page({
     })
   },
 
+  getActivityTypes() {
+    var that = this
+    qcloud.request({
+      // 要请求的地址
+      url: config.service.blogUrl,
+
+      data: {
+        act: 'getActivityTypes'
+      },
+
+      // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+      login: true,
+
+      success(result) {
+        let types = that.data.types
+        let type_id = that.data.type_id
+        types.list = result.data.data
+        types.selectedId = types.selectedId ? types.selectedId : result.data.data[0].id
+        type_id = type_id ? type_id : result.data.data[0].id
+        result.data.data.forEach(function (item, index) {
+          item.title = item.name
+        })
+        that.setData({
+          types: types,
+          type_id: type_id
+        });
+        console.log('request success', result);
+        that.getActivity()
+      }
+    })
+  },
+
   onLoad () {
     let that = this
     wx.getUserInfo({
@@ -114,7 +151,7 @@ Page({
       }
     })
     this.ininData()
-    this.getActivity()
+    this.getActivityTypes()
   },
 
   ininData () {
@@ -171,9 +208,12 @@ Page({
       },
 
       fail(error) {
+        joinedCount[id] = 0
         that.setData({
+          joinedCount: joinedCount,
           pending: 0
         });
+        that.showTopTips(error.type)
         console.log('request fail', error);
       },
     })
@@ -210,4 +250,21 @@ Page({
 
   },
 
-})
+  handleZanTabChange(e) {
+    var componentId = e.componentId;
+    var selectedId = e.selectedId;
+
+    this.setData({
+      [`types.selectedId`]: selectedId,
+      type_id: selectedId,
+      items:[],
+      loading: true,
+    });
+    this.getActivity(true)
+  },
+
+  showTopTips(title) {
+    this.showZanTopTips(title)
+  },
+
+}))

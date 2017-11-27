@@ -24,7 +24,7 @@ async function getActivityDetail(activityId) {
   return mysql('activity')
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
     .join('activityType', 'activityType.id', 'activity.type_id')
-    .select('activity.id', 'activity.title', 'activity.description', 'activity.start_time', 'activity.end_time', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name')
+    .select('activity.id', 'activity.title', 'activity.description', 'activity.start_time', 'activity.end_time', 'activity.only_verified', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name')
     .where('activity.id', activityId)
     .first()
 }

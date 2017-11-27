@@ -67,9 +67,6 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
         resultData['buildingIndex'] = resultData['building']
         resultData['floorIndex'] = resultData['floor']
         resultData['unitIndex'] = resultData['unit']
-        resultData['building'] = that.data['buildings'][resultData['buildingIndex']]
-        resultData['floor'] = that.data['floors'][resultData['floorIndex']]
-        resultData['unit'] = that.data['units'][resultData['unitIndex']]
 
         Object.assign(inputData,result.data.data)
         that.setData({
@@ -134,34 +131,20 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
     let buildingIndex = tmpdata[0]
     let floorIndex = tmpdata[1]
     let unitIndex = tmpdata[2]
+
+    if (inputData["buildingIndex"] == buildingIndex && inputData["floorIndex"] == floorIndex && inputData["unitIndex"] == unitIndex) {
+      return 1
+    }
     
-    inputData['building'] = this.data['buildings'][buildingIndex]
     inputData["buildingIndex"] = buildingIndex
-    inputData['floor'] = this.data['floors'][floorIndex]
     inputData["floorIndex"] = floorIndex
-    inputData['unit'] = this.data['units'][unitIndex]
     inputData["unitIndex"] = unitIndex
     this.setCustomerInfo('address', {
-      building : inputData['building'],
-      floor: inputData['floor'],
-      unit: inputData['unit'],
+      building : inputData['buildingIndex'],
+      floor: inputData['floorIndex'],
+      unit: inputData['unitIndex'],
     })
     console.log(inputData)
-    this.setData({
-      inputData: inputData
-    });
-  },
-
-  onAddressChange(e) {
-    console.log(e)
-    let inputData = this.data.inputData
-    let addressType = e.currentTarget.id
-    let addressIndex = e.detail.value
-    if (inputData[addressType] == this.data[addressType + 's'][addressIndex]) return
-    inputData[addressType] = this.data[addressType + 's'][addressIndex]
-    inputData[addressType + "Index"] = addressIndex
-    console.log(inputData)
-    this.setCustomerInfo(addressType, inputData[addressType])
     this.setData({
       inputData: inputData
     });
@@ -208,4 +191,8 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
   showTopTips(title) {
     this.showZanTopTips(title)
   },
+  showToast(e) {
+    let content = e.currentTarget.dataset.content
+    this.showZanToast(content);
+  }
 }))

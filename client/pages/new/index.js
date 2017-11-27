@@ -2,11 +2,12 @@
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var util = require('../../vendor/utils/util.js');
 var Zan = require('../../dist/index');
+import typeConfig from './typeConfig';
 
 // 引入配置
 var config = require('../../config');
 
-Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
+Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
   data: {
     inputData : {},
     endDate : '',
@@ -14,7 +15,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     errTxt: '',
     btnLoad: false,
     btnDisabled: false,
-    types:[]
+    types:[],
+    typeConfig: typeConfig
   },
 
   onLoad(option) {
@@ -60,7 +62,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
 
       success(result) {
         let inputData = that.data.inputData
-        inputData.type_idx = result.data.data[0].id
+        inputData.type_id = result.data.data[0].id
         that.setData({
           types: result.data.data
         });
@@ -91,12 +93,24 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
   },
   handleZanFieldChange(e) {
     const { componentId, detail } = e;
-    var inputData = this.data.inputData
+    let inputData = this.data.inputData
     inputData[componentId] = detail.value
 
     this.setData({
       inputData: inputData
     });
+  },
+
+  handleZanSwitchChange(e) {
+    var { checked, componentId } = e
+    var inputData = this.data.inputData
+    checked = checked ? 1 : 0
+    if (inputData[componentId] == checked) return
+    inputData[componentId] = checked
+    this.setData({
+      inputData: inputData
+    });
+
   },
 
   checkIsNull() {
@@ -144,6 +158,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
         act: 'save',
         title: data.title,
         type_id: data.type_id,
+        only_verified: data.only_verified,
         date: data.date + ' ' + data.time,
         description : data.description
       },

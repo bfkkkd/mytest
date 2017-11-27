@@ -2,8 +2,7 @@
 
 <view class="container">
 
-  <view class="doc-title">我的活动列表
-  <view class="zan-icon zan-icon-checked"  style="font-size: 20px; color: #ff4343;"></view>
+  <view class="doc-title">我的发起
   </view>
   <template wx:if="{{loading}}" is="zan-loadmore" data="{{loading: true}}" />
   <view wx:else>

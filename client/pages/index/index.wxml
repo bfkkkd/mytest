@@ -1,11 +1,15 @@
 <import src="../../dist/loadmore/index.wxml" />
+<import src="/dist/tab/index.wxml" />
+<import src="/dist/toptips/index.wxml" />
 
 <view class="container">
-  <view class="zan-panel-title title-bg">活动列表
-  <view class="zan-icon zan-icon-checked"  style="font-size: 20px; color: #ff4343;"></view>
+  <view class="zan-panel-title title-bg">大家的服务
+  </view>
+  <view>
+    <template is="zan-tab" data="{{tab: types, componentId: 'type_id'}}"></template>
   </view>
   <template wx:if="{{loading}}" is="zan-loadmore" data="{{loading: true}}" />
-  <view class="zan-panel">
+  <view class="zan-panel" style="margin-top:0;border-top:0;">
     <view class="zan-cell" wx:for="{{items}}" wx:key="id" wx:for-index="idx" wx:for-item="item">
       <view class="zan-cell__bd" bindtap="openDetail" data-id="{{item.id}}">
         <view class="zan-cell__text">{{item.title}}</view>
@@ -28,5 +32,7 @@
     </view>
   </view>
   <template wx:if="{{loadingMore}}" is="zan-loadmore" data="{{loading: true}}" />
+  <template wx:elif="{{!loading && !items[0]}}" is="zan-loadmore" data="{{nodata: true}}" />
 
 </view>
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>

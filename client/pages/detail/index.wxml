@@ -1,3 +1,5 @@
+<import src="/dist/toptips/index.wxml" />
+
 <view class="container">
   <view class="doc-title" style='min-height:50rpx'>{{item.title}}</view>
   <view class="zan-panel-title" style='height:90rpx'>
@@ -20,7 +22,7 @@
   <view wx:if="{{item.description}}" class="zan-panel">
     <view class="row-data">
       <view class="zan-font-12">
-        内容：{{item.description}}
+        {{item.description}}
       </view>
     </view>
   </view>
@@ -30,3 +32,4 @@
   </view>
 
 </view>
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>

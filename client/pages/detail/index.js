@@ -1,10 +1,11 @@
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var Zan = require('../../dist/index');
 
 // 引入配置
 var config = require('../../config');
 
-Page({
+Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   data: {
     message: '',
     item:{},
@@ -53,7 +54,7 @@ Page({
     var that = this
     let formId = e.detail.formId
     var item = this.data.item
-    item.joined = !item.joined;
+    item.joined = !item.joined
 
     this.setData({
       pending: 1
@@ -80,6 +81,7 @@ Page({
             success: res => {
               let newMember = { open_id: result.data.data.open_id, user_info: res.userInfo }
               item.members.push(newMember)
+              item.joined = 1
               that.setData({
                 item: item,
                 pending: 0
@@ -93,23 +95,22 @@ Page({
               item.members.splice(idx, 1);
             }
           })
+          item.joined = 0
           that.setData({
             item: item,
             pending: 0
           });
         }
-
-        that.setData({
-          item: item,
-          pending: 0
-        });
         console.log('request success', result);
       },
 
       fail(error) {
+        item.joined = !item.joined
         that.setData({
+          item: item,
           pending: 0
         });
+        that.showTopTips(error.type)
         console.log('request fail', error);
       },
     })
@@ -132,4 +133,8 @@ Page({
 
   },
 
-})
+  showTopTips(title) {
+    this.showZanTopTips(title)
+  },
+
+}))

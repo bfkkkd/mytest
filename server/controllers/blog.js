@@ -99,18 +99,23 @@ async function get(ctx, next) {
         sendMsg : 0,
       }
 
-      activityCount = await activityObject.getJoinedCount(activity_id, open_id)
-      if (!activityCount.count) {
-        await mysql('activityMember').insert({
-          activity_id, open_id, remark
-        })
-        returnData.state = 1
-      }
+      let activityItem = await activityObject.getActivityDetail(activity_id)
+      let memberItem = await memberObject.getCustomerInfo(activityItem.open_id)
+      
+      if (activityItem.only_verified && !memberItem.verified) {
+        throw new Error("请先实名认证后再参与！")
+      } else {
+        activityCount = await activityObject.getJoinedCount(activity_id, open_id)
+        if (!activityCount.count) {
+          await mysql('activityMember').insert({
+            activity_id, open_id, remark
+          })
+          returnData.state = 1
+        }
 
-      if (returnData.state) {
-        let activityItem = await activityObject.getActivityDetail(activity_id)
-        let memberItem = await memberObject.getCustomerInfo(activityItem.open_id)
-        returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem })
+        if (returnData.state) {
+          returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem })
+        }
       }
 
       ctx.state.data = returnData
@@ -190,13 +195,13 @@ async function post(ctx, next) {
   let activity_id = 0
   ctx.state.code = '0'
   if (act == 'save') {
-    var { title, date, description } = ctx.request.body
+    var { title, type_id, only_verified, date, description } = ctx.request.body
     if (title.length > 30 || description.length > 300) {
       ctx.state.code = '-1'
       ctx.state.data = '标题或详细内容超出长度'
     } else {
       ctx.state.data = await mysql('activity').insert(
-        { title: title, description: description, end_time: date , open_id: open_id })
+        { title: title, type_id: type_id, only_verified:only_verified, description: description, end_time: date , open_id: open_id })
         .then(function (id) {
           activity_id = id[0]
           return mysql('activityMember').insert({
@@ -209,9 +214,25 @@ async function post(ctx, next) {
     }
   } else if (act == 'setCustomerInfo') {
     var { field, value } = ctx.request.body
+    let updateData = {}
     if (field == 'real_name' || field == 'phone' || field == 'building' || field == 'floor' || field == 'unit' || field == 'published') {
-      ctx.state.data = await memberObject.setCustomerInfo(open_id, field, value) 
+      updateData[field] = value
+    } else if (field == 'address') {
+      if (value.building && value.floor && value.unit) {
+        updateData.building = value.building
+        updateData.floor = value.floor
+        updateData.unit = value.unit
+      } else {
+        ctx.state.code = '-1'
+        ctx.state.data = '不正确的楼栋号'
+      }
+      
     }
+
+    if (updateData) {
+      ctx.state.data = await memberObject.setCustomerInfo(open_id, updateData) 
+    }
+
   }else {
     ctx.state.data = act
   }

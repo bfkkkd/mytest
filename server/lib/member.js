@@ -6,9 +6,7 @@ async function getCustomerInfo(open_id) {
     .where('open_id', open_id).first()
 }
 
-async function setCustomerInfo(open_id, field, value) {
-  let updateData = {}
-  updateData[field] = value
+async function setCustomerInfo(open_id, updateData) {
   return mysql('customerInfo').update(updateData).where('open_id', open_id)
 }
 

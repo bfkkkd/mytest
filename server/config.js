@@ -9,7 +9,7 @@ const CONF = {
     appSecret: 'b6d37fe8fb35b465a2d2c85c96f3f284',
 
     // 是否使用腾讯云代理登录小程序
-    useQcloudLogin: false,
+    useQcloudLogin: true,
 
     /**
      * MySQL 配置，用来存储 session 和用户信息
@@ -37,7 +37,7 @@ const CONF = {
          * 新加坡：sg
          * @see https://www.qcloud.com/document/product/436/6224
          */
-        region: 'cn-south',
+        region: 'ap-guangzhou',
         // Bucket 名称
         fileBucket: 'wximg',
         // 文件夹

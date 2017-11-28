@@ -205,7 +205,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
               let inputData = that.data.inputData
               res = JSON.parse(res.data)
               console.log(res)
-              inputData.img_urls.push(res.data.imgUrl)
+              inputData.img_urls[i] = res.data.imgUrl
               that.setData({
                 inputData: inputData
               })

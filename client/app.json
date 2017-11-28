@@ -8,7 +8,8 @@
         "pages/myinfo/index",
         "pages/about/index",
         "pages/chat/chat",
-        "pages/blog/index"
+        "pages/blog/index",
+        "pages/old/index"
     ],
     "window": {
         "backgroundTextStyle": "light",

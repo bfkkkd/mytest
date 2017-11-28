@@ -39,7 +39,14 @@
         </picker>
       </view>
     </view>
-
+    <view class="zan-panel">
+      <view class="zan-cell zan-field">
+        <view bindtap="doUpload" class="zan-cell__hd zan-field__title">上传图片</view>
+        <view class="preview-imgs" wx:if="{{ inputData.img_urls }}">
+          <image bindtap="previewImage" wx:for="{{inputData.img_urls}}" wx:for-index="idx" wx:for-item="item" mode="aspectFill" src="{{item}}" data-idx="{{idx}}" ></image>
+        </view>
+      </view>
+    </view>
     <view class="zan-panel" style='height:300rpx'>
       <view class="zan-cell zan-field">
       <textarea bindinput="_handleZanFieldChange" class="zan-field__input zan-cell__bd" style="height:260rpx" name="description" data-component-id="description" maxlength="200" placeholder="详细内容（选填，200字以内）" placeholder-class="zan-field__placeholder" value="">

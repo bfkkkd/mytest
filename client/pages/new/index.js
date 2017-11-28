@@ -14,7 +14,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     errTxt: '',
     btnLoad: false,
     btnDisabled: false,
-    types:[]
+    types:[],
+    uploadUrl: config.service.uploadUrl
   },
 
   onLoad(option) {
@@ -39,6 +40,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
     inputData.description = ''
     inputData.type_id = 0
     inputData.type_idx = 0
+    inputData.img_urls = []
     this.setData({
       inputData: inputData,
       endDate: endDate
@@ -165,5 +167,56 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, {
         console.log('request fail', error);
       },
     })
-  }
+  },
+
+  doUpload() {
+    var that = this
+
+    wx.chooseImage({
+      count: 3,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: function (res) {
+        var filePaths = res.tempFilePaths
+
+        for (let i = 0; i < filePaths.length; i++) {
+          wx.uploadFile({
+            url: that.data.uploadUrl,
+            filePath: filePaths[i],
+            name: 'file',
+
+            success: function (res) {
+              that.showTopTips('上传图片成功')
+              let inputData = that.data.inputData
+              res = JSON.parse(res.data)
+              console.log(res)
+              inputData.img_urls.push(res.data.imgUrl)
+              that.setData({
+                inputData: inputData
+              })
+            },
+
+            fail: function (e) {
+              console.error(e)
+            }
+          })
+        }
+
+      },
+      fail: function (e) {
+        console.error(e)
+      }
+    })
+  },
+
+  previewImage(e) {
+    var that = this
+    console.log(e)
+    let id = e.currentTarget.dataset.idx
+    wx.previewImage({
+      current: that.data.inputData.img_urls[id],
+      urls: that.data.inputData.img_urls
+    })
+  },
+
 }))

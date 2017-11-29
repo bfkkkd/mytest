@@ -137,4 +137,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     this.showZanTopTips(title)
   },
 
+  previewImage(e) {
+    var that = this
+    console.log(e)
+    let id = e.currentTarget.dataset.idx
+    wx.previewImage({
+      current: that.data.item.img_urls[id],
+      urls: that.data.item.img_urls
+    })
+  },
+
 }))

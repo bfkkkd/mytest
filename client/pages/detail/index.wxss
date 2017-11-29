@@ -23,3 +23,18 @@
   line-height: 50rpx;
   vertical-align: middle;
 }
+
+.preview-imgs{
+  display: flex;
+  /*justify-content: space-between;*/
+}
+.preview-imgs image{
+  background: #ddd;
+  width: 216rpx;
+  height:216rpx;
+  border-radius:6rpx;
+  margin-right: 21rpx; 
+}
+.preview-imgs image:last-child{
+    margin-right: 0rpx;
+}

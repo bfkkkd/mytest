@@ -151,6 +151,10 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
 
   save(data) {
     var that = this
+    wx.showLoading({
+      title: '提交中...',
+      mask: true
+    })
     qcloud.request({
       // 要请求的地址
       url: config.service.blogUrl,
@@ -162,15 +166,18 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
         type_id: data.type_id,
         only_verified: data.only_verified,
         date: data.date + ' ' + data.time,
-        description : data.description
+        description : data.description,
+        img_urls: data.img_urls,
       },
 
       login: true,
 
       success(result) {
         that.setBtnLoading(that)
+        wx.hideLoading();
         if (result.data.code == '0' && result.data.data.activity_id) {
-            that.showZanToast('提交成功！');
+          that.initdefault()
+          that.showZanToast('提交成功！');
           wx.navigateTo({ url: '../detail/index?id=' + result.data.data.activity_id });
         } else {
           that.showTopTips(result.data.data)
@@ -179,6 +186,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
       },
 
       fail(error) {
+        wx.hideLoading();
+        that.showTopTips('连接超时请重试！')
         console.log('request fail', error);
       },
     })
@@ -193,6 +202,10 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
       sourceType: ['album', 'camera'],
       success: function (res) {
         var filePaths = res.tempFilePaths
+        wx.showLoading({
+          title: '上传中...',
+          mask: true
+        });
 
         for (let i = 0; i < filePaths.length; i++) {
           wx.uploadFile({
@@ -201,7 +214,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
             name: 'file',
 
             success: function (res) {
-              that.showTopTips('上传图片成功')
+              wx.hideLoading();
               let inputData = that.data.inputData
               res = JSON.parse(res.data)
               console.log(res)
@@ -212,6 +225,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
             },
 
             fail: function (e) {
+              that.showTopTips('连接超时请重试！')
+              wx.hideLoading();
               console.error(e)
             }
           })

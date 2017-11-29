@@ -8,7 +8,7 @@
   <view class="container">
     <view class="zan-panel">
       <view class="zan-cell zan-field">
-        <view class="zan-cell__hd zan-field__title">服务类别</view>
+        <view class="zan-cell__hd zan-field__title">服务类别：</view>
         <picker
           mode="selector"
           id="type_id"
@@ -27,7 +27,7 @@
     </view>
     <view class="zan-panel">
       <view class="zan-cell zan-field">
-        <view class="zan-cell__hd zan-field__title" style="padding:4px 0;min-height:22px;">截止时间</view>
+        <view class="zan-cell__hd zan-field__title" style="padding:4px 0;min-height:22px;">截止时间：</view>
         <picker name="date1" mode="date" value="{{inputData.date}}" start="{{inputData.date}}"  end="{{endDate}}" bindchange="_handleZanFieldChange" data-component-id="date">
                 <view class="picker">
                   {{inputData.date}}
@@ -42,8 +42,8 @@
     </view>
     <view class="zan-panel">
       <view class="zan-cell zan-field">
-        <view class="zan-icon zan-icon-photo" style="font-size: 16px; color:cornflowerblue"></view>
-        <view bindtap="doUpload" class="zan-cell__hd zan-field__title zan-field__input">添加图片（最多三张）</view>
+        <view bindtap="doUpload" class="zan-cell__hd zan-field__title zan-field__input">添加图片：（最多三张）
+        <view class="zan-icon zan-icon-photo" style="font-size: 16px; color:cornflowerblue"></view></view>
       </view>
     </view>
     <view class="zan-panel" wx:if="{{ inputData.img_urls[0] }}">

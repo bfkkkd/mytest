@@ -19,6 +19,13 @@
       </view>
     </view>
   </view>
+  <view class="zan-panel" wx:if="{{ item.img_urls[0] }}">
+      <view class="zan-cell zan-field">
+        <view class="zan-field__input zan-cell__bd preview-imgs">
+          <image bindtap="previewImage" wx:for="{{item.img_urls}}" wx:for-index="idx" wx:for-item="item" mode="aspectFill" src="{{item}}" data-idx="{{idx}}" wx:key="idx" ></image>
+        </view>
+      </view>
+  </view>
   <view wx:if="{{item.description}}" class="zan-panel">
     <view class="row-data">
       <view class="zan-font-12">

@@ -153,6 +153,7 @@ async function get(ctx, next) {
 
     item.joined = 0 
     item.user_info = JSON.parse(item.user_info)
+    item.img_urls = JSON.parse(item.img_urls)
 
     if (item.members.length > 0) {
       for (let i = 0; i < item.members.length; i++) {
@@ -195,13 +196,14 @@ async function post(ctx, next) {
   let activity_id = 0
   ctx.state.code = '0'
   if (act == 'save') {
-    var { title, type_id, only_verified, date, description } = ctx.request.body
+    var { title, type_id, only_verified, date, description, img_urls } = ctx.request.body
+    img_urls = JSON.stringify(img_urls)
     if (title.length > 30 || description.length > 300) {
       ctx.state.code = '-1'
       ctx.state.data = '标题或详细内容超出长度'
     } else {
       ctx.state.data = await mysql('activity').insert(
-        { title: title, type_id: type_id, only_verified:only_verified, description: description, end_time: date , open_id: open_id })
+        { title: title, type_id: type_id, only_verified: only_verified, description: description, end_time: date, open_id: open_id, img_urls: img_urls })
         .then(function (id) {
           activity_id = id[0]
           return mysql('activityMember').insert({

@@ -87,9 +87,8 @@ async function get(ctx, next) {
       ctx.state.data = members
 
   } else if (act == 'join') {
-    var { activity_id,join,form_id } = ctx.query
+    var { activity_id,join,form_id, remark } = ctx.query
     activity_id = Number(activity_id)
-    const remark = ''
     if (join == 'true') {
       let returnData = {
         activity_id: activity_id,
@@ -111,9 +110,16 @@ async function get(ctx, next) {
             activity_id, open_id, remark
           })
           returnData.state = 1
+        } else {
+          await mysql('activityMember')
+          .update({remark : remark})
+          .where('open_id', open_id)
+          .andWhere('activity_id', activity_id)
+          .limit(1)
+          returnData.state = 2
         }
 
-        if (returnData.state) {
+        if (returnData.state == 1) {
           returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem })
         }
       }

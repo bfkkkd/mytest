@@ -37,7 +37,13 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       success(result) {
         result.data.data.start_time = that.date_format(new Date(result.data.data.start_time))
         result.data.data.end_time = that.date_format(new Date(result.data.data.end_time))
+        result.data.data.members.forEach(function (mitem, idx) {
+          if (mitem.open_id == result.data.data.open_id) {
+            result.data.data.memberIdx = idx
+          }
+        })
         that.setData({ item: result.data.data });
+
         console.log('request success', result);
       },
 
@@ -53,8 +59,13 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
     var that = this
     let formId = e.detail.formId
+    let remark = e.detail.value.remark
     var item = this.data.item
-    item.joined = !item.joined
+    item.joined = e.detail.target.dataset.type == 'del' ? false : true
+
+    if (item.joined && remark == item.members[item.memberIdx].remark) {
+      return
+    }
 
     this.setData({
       pending: 1
@@ -68,7 +79,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         act: 'join',
         activity_id: item.id,
         form_id: formId,
-        join: item.joined
+        join: item.joined,
+        remark: remark
       },
 
       login: true,
@@ -79,8 +91,18 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         if (act == 'join') {
           wx.getUserInfo({
             success: res => {
-              let newMember = { open_id: result.data.data.open_id, user_info: res.userInfo }
-              item.members.push(newMember)
+              let exist = false
+              item.members.forEach(function (mitem, idx) {
+                if (mitem.open_id == result.data.data.open_id) {
+                  mitem.remark = remark
+                  exist = true
+                }
+              })
+              if (exist == false) {
+                let newMember = { open_id: result.data.data.open_id, user_info: res.userInfo }
+                item.members.push(newMember)
+                item.memberIdx = item.members.length-1
+              }
               item.joined = 1
               that.setData({
                 item: item,
@@ -90,11 +112,6 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           })
 
         } else if (act == 'del') {
-          item.members.forEach(function (mitem, idx) {
-            if (mitem.open_id == result.data.data.open_id) {
-              item.members.splice(idx, 1);
-            }
-          })
           item.joined = 0
           that.setData({
             item: item,

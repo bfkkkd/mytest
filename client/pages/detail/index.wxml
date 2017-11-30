@@ -5,12 +5,6 @@
   <view class="zan-panel-title" style='height:90rpx'>
   <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   {{item.user_info.nickName}} 发起
-  <view style = "float:right">
-  <form report-submit="true" bindsubmit="doActivity">
-    <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加入中</button>
-    <button form-type="submit" wx:else data-id="{{item.id}}" class="zan-btn zan-btn--small zan-btn--{{ item.joined ? 'primary' : 'warn'}} zan-btn--plain" >{{ item.joined ? '已加入' : '未加入'}}</button>
-  </form>
-  </view>
   </view>
   <view class="zan-panel" >
     <view class="row-data">
@@ -34,9 +28,38 @@
     </view>
   </view>
   <view class="zan-panel-title">参与人：({{item.members.length}})</view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-field" wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
+      <image class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+      {{member.user_info.nickName}}
+      {{member.remark}}
+      {{member.add_time}}
+    </view>
+  </view>
   <view class="demo">
       <image wx:for="{{item.members}}" wx:key="id" wx:for-index="idx" wx:for-item="member"class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   </view>
 
+  <view class="zan-panel" style="height:130rpx" >
+  </view>
+
+</view>
+<view class="bottom">
+  <view class="zan-panel" >
+    <form report-submit="true" bindsubmit="doActivity"> 
+    <view class="zan-cell zan-field row-data">
+      <input
+        type="text"
+        value="{{ item.members[item.memberIdx].remark || '+1' }}"
+        name="remark"
+        class="zan-field__input zan-cell__bd" style="border:1rpx solid #e5e5e5;border-radius:10rpx;padding:9rpx 9rpx;"/>
+      <view class="zan-cell__ft">　
+        <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加载</button>
+        <button form-type="submit" wx:else data-id="{{item.id}}" data-type="join" class="zan-btn zan-btn--small zan-btn--primary zan-btn--plain" >{{ item.joined ? '更新' : '加入'}}</button>
+        <button form-type="submit" wx:if="{{item.joined}}" data-id="{{item.id}}" data-type="del" class="zan-btn zan-btn--small zan-btn--plain zan-btn--warn">退出</button>
+      </view>
+    </view>
+    </form>
+  </view>
 </view>
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>

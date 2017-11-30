@@ -41,7 +41,7 @@ async function getMemberCount(activityIdArray) {
 async function getActivityMembers(activityId, limit = 20) {
   return mysql('activityMember')
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
-    .select('cSessionInfo.open_id', 'cSessionInfo.user_info')
+    .select('cSessionInfo.open_id', 'cSessionInfo.user_info', 'activityMember.remark', 'activityMember.add_time')
     .where('activityMember.activity_id', activityId).limit(limit)
 
 }

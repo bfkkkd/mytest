@@ -21,7 +21,7 @@
 				{
 					"id": 0,
 					"name": "new",
-					"pathName": "pages/new/index",
+					"pathName": "pages/detail/index",
 					"query": "id=2"
 				}
 			]

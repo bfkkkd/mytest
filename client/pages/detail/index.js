@@ -1,6 +1,7 @@
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var Zan = require('../../dist/index');
+var util  = require('../../vendor/utils/util.js');
 
 // 引入配置
 var config = require('../../config');
@@ -10,7 +11,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     message: '',
     item:{},
     pending: 0,
-    userinfo: {}
+    userinfo: {},
+    step:1
   },
 
   onLoad(option) {
@@ -35,9 +37,10 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       login: true,
 
       success(result) {
-        result.data.data.start_time = that.date_format(new Date(result.data.data.start_time))
-        result.data.data.end_time = that.date_format(new Date(result.data.data.end_time))
+        result.data.data.start_time = util.formatDayAndTime(new Date(result.data.data.start_time))
+        result.data.data.end_time = util.formatDayAndTime(new Date(result.data.data.end_time))
         result.data.data.members.forEach(function (mitem, idx) {
+          mitem.add_time = util.formatDayAndTime(new Date(mitem.add_time))
           if (mitem.open_id == result.data.data.open_id) {
             result.data.data.memberIdx = idx
           }
@@ -131,15 +134,6 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         console.log('request fail', error);
       },
     })
-  },
-
-  date_format(date) {
-    return date.getFullYear() + "-" 
-          + (date.getMonth() + 1) 
-          + "-" + date.getDate() 
-          + " " + date.getHours() 
-          + "点" + date.getMinutes() + "分"
-
   },
 
   onShareAppMessage() {

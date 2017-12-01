@@ -1,19 +1,22 @@
 .demo {
-  padding: 10rpx 30rpx;
   display: flex;
+  justify-content: space-between;
+  width: 100%
 }
 .demo__item {
   flex: 1;
   height: 90rpx;
-  line-height: 90rpx;
   vertical-align: middle;
-  padding-left:10px
+}
+.title_right {
+  display:block;
+  text-align: right;
+  margin-right: 20rpx;
 }
 
 .userinfo-avatar {
   width: 90rpx;
   height: 90rpx;
-  margin-left: 20rpx;
   border-radius: 50%;
 }
 

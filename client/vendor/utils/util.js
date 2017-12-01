@@ -8,7 +8,7 @@ function formatDayAndTime(date) {
   var second = date.getSeconds()
 
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute].map(formatNumber).join(':')
 }
 function formatDay(date,str) {
   var year = date.getFullYear()
@@ -26,25 +26,9 @@ function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
-function setBtnDefault(page){
-  const st = setTimeout(function(){
-        page.setData({
-          btnLoad: !page.data.btnLoad,
-          btnDisabled: !page.data.btnDisabled
-        });
-        clearTimeout(st);
-  },1500);
-}
-function setBtnLoading(page){
-    page.setData({
-      btnLoad: !page.data.btnLoad,
-      btnDisabled: !page.data.btnDisabled
-    })
-    setBtnDefault(page);
-}
+
 module.exports = {
   formatDayAndTime,
   formatDay,
   formatTime,
-  setBtnLoading,
 }

@@ -1,17 +1,11 @@
 <import src="/dist/toptips/index.wxml" />
 
 <view class="container">
-  <view class="doc-title" style='min-height:50rpx'>{{item.title}}</view>
-  <view class="zan-panel-title" style='height:90rpx'>
-  <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
-  {{item.user_info.nickName}} 发起
+  <view class="doc-title" style='min-height:50rpx'>
+  <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>{{item.title}}
   </view>
-  <view class="zan-panel" >
-    <view class="row-data">
-      <view class="zan-font-12">
-        截止日期：{{item.end_time}}
-      </view>
-    </view>
+  <view class="title_right zan-font-12 zan-c-gray-darker">
+  {{item.user_info.nickName}} 发起，{{item.end_time}} 截止
   </view>
   <view class="zan-panel" wx:if="{{ item.img_urls[0] }}">
       <view class="zan-cell zan-field">
@@ -30,17 +24,28 @@
   <view class="zan-panel-title">参与人：({{item.members.length}})</view>
   <view class="zan-panel">
     <view class="zan-cell zan-field" wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
+      <view class='demo'>
+      <view class='demo__item' style='flex: 0 0 100rpx'>
       <image class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
-      {{member.user_info.nickName}}
-      {{member.remark}}
-      {{member.add_time}}
+      </view>
+      <view class='demo__item' style="display:flex;flex-direction:column;flex-wrap: wrap;padding:0 0 0 10rpx;">
+        <view style='height:40rpx;display:flex;justify-content: space-between;'>
+        <view class='demo__item zan-font-10 zan-c-gray-darker' style='flex: 0 0 200rpx'>
+        {{member.user_info.nickName}}:
+        </view>
+        <view class='demo__item zan-font-10 zan-c-gray' style='flex: 0 0 200rpx'>
+        {{member.add_time}}
+        </view>
+        </view>
+        <view class='zan-font-12' style='height:40rpx'>
+        {{member.remark}}
+        </view>
+      </view>
+      </view>
     </view>
   </view>
-  <view class="demo">
-      <image wx:for="{{item.members}}" wx:key="id" wx:for-index="idx" wx:for-item="member"class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
-  </view>
 
-  <view class="zan-panel" style="height:130rpx" >
+  <view style="height:150rpx;background: #F9F9F9" >
   </view>
 
 </view>

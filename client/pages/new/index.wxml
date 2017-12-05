@@ -5,29 +5,50 @@
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>
 
 <form bindsubmit="formSubmit">
-  <view class="container">
+  <view class="container" wx:if="{{step == 1}}">
+    <view class="zan-panel-title">发布个啥？</view>
     <view class="zan-panel">
-      <view class="zan-cell zan-field">
-        <view class="zan-cell__hd zan-field__title">服务类别：</view>
-        <picker
-          mode="selector"
-          id="type_id"
-          range-key="name"
-          class="zan-field__input zan-cell__bd"
-          range="{{ types }}"
-          value="{{ inputData.type_idx }}"
-          bindchange="onTypeChange"
-        >
-          {{ types[inputData.type_idx].name }}
-        </picker>
+      <view class="zan-btns">
+        <button class="zan-btn zan-btn--primary" bindtap="onTypeChange" wx:for="{{types}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}" wx:key="idx"> {{ item.name }}</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="container" wx:elif="{{step == 2}}">
+    <view class="zan-panel-title">起个标题：</view>
+    <view class="zan-panel">
+    <template is="zan-field" data="{{ type: 'input', componentId:'title', placeholder: typeConfig['type_'+types[inputData.type_idx].id] }}"></template>
+    </view>
+    <view class="bottom">
+      <view class="zan-panel">
+        <view class="zan-row">
+          <view class="zan-col zan-col-12">
+            <button bindtap="prevStep" class="zan-btn zan-btn--large zan-btn--warn">上一步</button>
+          </view>
+          <view class="zan-col zan-col-12">
+            <button bindtap="nextStep" class="zan-btn zan-btn--large zan-btn--primary">下一步</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="container" wx:elif="{{step == 3}}">
+    <view class="zan-panel-title">有效期：</view>
+    <view class="zan-panel">
+    <view class="zan-cell zan-field">
+        <view class="zan-col zan-col-20">
+          <slider bindchange="_handleZanFieldChange" data-component-id="simpleDate" min="1" max="10" show-value="true" />
+        </view>
+        <view class="zan-col zan-col-4 zan-font-14">
+          <view>天</view>
+        </view>
       </view>
     </view>
     <view class="zan-panel">
-      <template is="zan-field" data="{{ type: 'input', componentId:'title', placeholder: typeConfig['type_'+types[inputData.type_idx].id] }}"></template>
-    </view>
-    <view class="zan-panel">
       <view class="zan-cell zan-field">
-        <view class="zan-cell__hd zan-field__title" style="padding:4px 0;min-height:22px;">截止时间：</view>
+      
+        <view class="zan-cell__hd zan-field__title" style="padding:4px 0;min-height:22px;">截至</view>
         <picker name="date1" mode="date" value="{{inputData.date}}" start="{{inputData.date}}"  end="{{endDate}}" bindchange="_handleZanFieldChange" data-component-id="date">
                 <view class="picker">
                   {{inputData.date}}
@@ -40,6 +61,21 @@
         </picker>
       </view>
     </view>
+    <view class="bottom">
+      <view class="zan-panel">
+        <view class="zan-row">
+          <view class="zan-col zan-col-12">
+            <button bindtap="prevStep" class="zan-btn zan-btn--large zan-btn--warn">上一步</button>
+          </view>
+          <view class="zan-col zan-col-12">
+            <button bindtap="nextStep" class="zan-btn zan-btn--large zan-btn--primary">下一步</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="container" wx:else>
     <view class="zan-panel">
       <view class="zan-cell zan-field">
         <view bindtap="doUpload" class="zan-cell__hd zan-field__title zan-field__input">添加图片：（最多三张）
@@ -67,8 +103,17 @@
         </view>
       </view>
     </view>
-    <view class="zan-panel">
-      <button formType="submit" disabled="{{btnDisabled}}" loading="{{btnLoad}}"  class="zan-btn zan-btn--large zan-btn--primary">提交</button>
+    <view class="bottom">
+      <view class="zan-panel">
+        <view class="zan-row">
+          <view class="zan-col zan-col-12">
+            <button bindtap="prevStep" class="zan-btn zan-btn--large zan-btn--warn">上一步</button>
+          </view>
+          <view class="zan-col zan-col-12">
+            <button formType="submit" disabled="{{btnDisabled}}" loading="{{btnLoad}}"  class="zan-btn zan-btn--large zan-btn--primary">提交</button>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </form>

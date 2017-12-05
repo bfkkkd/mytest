@@ -17,7 +17,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     btnDisabled: false,
     types:[],    
 	uploadUrl: config.service.uploadUrl, 
-    typeConfig: typeConfig  
+    typeConfig: typeConfig,
+    step: 1  
   },
 
   onLoad(option) {
@@ -77,11 +78,28 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
   onTypeChange(e) {
     console.log(e)
     var inputData = this.data.inputData
-    inputData.type_idx = e.detail.value
-    inputData.type_id = this.data.types[e.detail.value].id || 0
+    inputData.type_idx = e.currentTarget.dataset.idx
+    inputData.type_id = this.data.types[e.currentTarget.dataset.idx].id || 0
 
     this.setData({
-      inputData: inputData
+      inputData: inputData,
+      step : 2
+    });
+  },
+
+  prevStep() {
+    let step = this.data.step
+    step = step < 1 ? 1 : step-1
+    this.setData({
+      step: step
+    });
+  },
+
+  nextStep() {
+    let step = this.data.step
+    step = step + 1
+    this.setData({
+      step: step
     });
   },
 
@@ -96,7 +114,16 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
   handleZanFieldChange(e) {
     const { componentId, detail } = e;
     let inputData = this.data.inputData
-    inputData[componentId] = detail.value
+
+    if (componentId == 'simpleDate') {
+      let currDay = new Date();
+      currDay.setDate(currDay.getDate() + detail.value);
+      let day = util.formatDay(currDay, "-");
+      inputData['date'] = day
+      inputData['time'] = '23:59'
+    } else {
+      inputData[componentId] = detail.value
+    }
 
     this.setData({
       inputData: inputData

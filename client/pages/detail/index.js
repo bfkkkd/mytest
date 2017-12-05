@@ -12,7 +12,6 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     item:{},
     pending: 0,
     userinfo: {},
-    step:1
   },
 
   onLoad(option) {

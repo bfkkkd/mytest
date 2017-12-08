@@ -18,7 +18,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     types:[],    
 	uploadUrl: config.service.uploadUrl, 
     typeConfig: typeConfig,
-    step: 1  
+    step: 1,
+    customDate: false,  
   },
 
   onLoad(option) {
@@ -100,6 +101,13 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     step = step + 1
     this.setData({
       step: step
+    });
+  },
+
+  customDate() {
+    let customDate = !this.data.customDate
+    this.setData({
+      customDate: customDate
     });
   },
 

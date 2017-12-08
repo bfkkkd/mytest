@@ -6,7 +6,7 @@
 
 <form bindsubmit="formSubmit">
   <view class="container" wx:if="{{step == 1}}">
-    <view class="zan-panel-title">发布个啥？</view>
+    <view class="zan-panel-title">类目是？</view>
     <view class="zan-panel">
       <view class="zan-btns">
         <button class="zan-btn zan-btn--primary" bindtap="onTypeChange" wx:for="{{types}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}" wx:key="idx"> {{ item.name }}</button>
@@ -15,7 +15,7 @@
   </view>
 
   <view class="container" wx:elif="{{step == 2}}">
-    <view class="zan-panel-title">起个标题：</view>
+    <view class="zan-panel-title">简要说明：</view>
     <view class="zan-panel">
     <template is="zan-field" data="{{ type: 'input', componentId:'title', placeholder: typeConfig['type_'+types[inputData.type_idx].id] }}"></template>
     </view>
@@ -34,18 +34,24 @@
   </view>
 
   <view class="container" wx:elif="{{step == 3}}">
-    <view class="zan-panel-title">有效期：</view>
     <view class="zan-panel">
-    <view class="zan-cell zan-field">
-        <view class="zan-col zan-col-20">
+      <view class="zan-cell zan-field">
+        <view class="zan-col zan-col-4 zan-font-14">
+          <view>有效期</view>
+        </view>
+        <view class="zan-col zan-col-12">
           <slider bindchange="_handleZanFieldChange" data-component-id="simpleDate" min="1" max="10" show-value="true" />
         </view>
         <view class="zan-col zan-col-4 zan-font-14">
           <view>天</view>
         </view>
+        <view class="zan-col zan-col-4 zan-font-14" bindtap='customDate'>
+          <view class="zan-icon zan-icon-edit-data" style="font-size: 60rpx; color:cornflowerblue"></view>
+        </view>
       </view>
     </view>
-    <view class="zan-panel">
+    <view wx:if="{{!customDate}}" class="zan-panel-title" style='padding: 30rpx 30rpx 30rpx 0; text-align: right'>截至：{{inputData.date}} {{inputData.time}}</view>
+    <view wx:else class="zan-panel">
       <view class="zan-cell zan-field">
       
         <view class="zan-cell__hd zan-field__title" style="padding:4px 0;min-height:22px;">截至</view>
@@ -75,7 +81,7 @@
     </view>
   </view>
 
-  <view class="container" wx:else>
+  <view class="container" wx:elif="{{step==4}}">
     <view class="zan-panel">
       <view class="zan-cell zan-field">
         <view bindtap="doUpload" class="zan-cell__hd zan-field__title zan-field__input">添加图片：（最多三张）
@@ -88,10 +94,25 @@
           <image bindtap="previewImage" wx:for="{{inputData.img_urls}}" wx:for-index="idx" wx:for-item="item" mode="aspectFill" src="{{item}}" data-idx="{{idx}}" wx:key="idx" ></image>
         </view>
       </view>
+    </view> 
+    <view class="bottom">
+      <view class="zan-panel">
+        <view class="zan-row">
+          <view class="zan-col zan-col-12">
+            <button bindtap="prevStep" class="zan-btn zan-btn--large zan-btn--warn">上一步</button>
+          </view>
+          <view class="zan-col zan-col-12">
+            <button bindtap="nextStep" class="zan-btn zan-btn--large zan-btn--primary">下一步</button>
+          </view>
+        </view>
+      </view>
     </view>
+  </view>
+  
+  <view class="container" wx:else>
     <view class="zan-panel" style='height:300rpx'>
       <view class="zan-cell zan-field">
-      <textarea bindinput="_handleZanFieldChange" class="zan-field__input zan-cell__bd" style="height:260rpx" name="description" data-component-id="description" maxlength="200" placeholder="详细内容（选填，200字以内）" placeholder-class="zan-field__placeholder" value="">
+      <textarea bindinput="_handleZanFieldChange" class="zan-field__input zan-cell__bd" style="height:260rpx" name="description" data-component-id="description" maxlength="200" placeholder="详细说明（选填，200字以内）" placeholder-class="zan-field__placeholder" value="">
 </textarea>
     </view>
     </view>

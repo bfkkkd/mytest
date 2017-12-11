@@ -5,8 +5,8 @@
         <image class="logo" style='border-radius:50%;' src="{{userInfo.avatarUrl || '/images/youke.png'}}">
   </image>
         <view class="zan-badge__count demo__icon_checked"> √ </view>
-        <view class="nickname"> {{userInfo.nickName}} </view>
       </view>
+      <view class="nickname"> {{userInfo.nickName}} </view>
     </view>
   </view>
 

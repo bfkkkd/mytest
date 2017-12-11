@@ -3,7 +3,7 @@
 <import src="/dist/toptips/index.wxml" />
 
 <view class="container">
-  <view class="zan-panel-title title-bg">大家的服务
+  <view class="zan-panel-title title-bg">社区是大家，帮助你我他。 
   </view>
   <view>
     <template is="zan-tab" data="{{tab: types, componentId: 'type_id'}}"></template>

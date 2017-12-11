@@ -19,51 +19,52 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   onLoad(option) {
     let that = this
+    var activity_id = Number(option.id)
+    if (activity_id < 1) return
     wx.getUserInfo({
       success: function (res) {
         that.setData({ userInfo: res.userInfo });
+        qcloud.request({
+          // 要请求的地址
+          url: config.service.blogUrl,
+
+          data: {
+            act: 'getActivityDetail',
+            activity_id: activity_id
+          },
+
+          // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+          login: true,
+
+          success(result) {
+            result.data.data.start_time = util.formatDayAndTime(new Date(result.data.data.start_time))
+            result.data.data.end_time = util.formatDayAndTime(new Date(result.data.data.end_time))
+            result.data.data.members.forEach(function (mitem, idx) {
+              mitem.add_time = util.formatDayAndTime(new Date(mitem.add_time))
+              if (mitem.open_id == that.data.userInfo.open_id) {
+                result.data.data.memberIdx = idx
+              }
+            })
+            that.setData({ item: result.data.data });
+
+            let memberLehgth = result.data.data.members.length
+            if (memberLehgth > 0) {
+              that.setData({
+                last_time: result.data.data.members[memberLehgth - 1].add_time,
+                hasMore: memberLehgth < 20 ? false : true
+              });
+            }
+
+            console.log('request success', result);
+          },
+
+          fail(error) {
+            console.log('request fail', error);
+          },
+        })
       }
     })
-    var activity_id = Number(option.id)
-    if (activity_id < 1) return
-    qcloud.request({
-      // 要请求的地址
-      url: config.service.blogUrl,
-
-      data: {
-        act: 'getActivityDetail',
-        activity_id: activity_id
-      },
-
-      // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
-      login: true,
-
-      success(result) {
-        result.data.data.start_time = util.formatDayAndTime(new Date(result.data.data.start_time))
-        result.data.data.end_time = util.formatDayAndTime(new Date(result.data.data.end_time))
-        result.data.data.members.forEach(function (mitem, idx) {
-          mitem.add_time = util.formatDayAndTime(new Date(mitem.add_time))
-          if (mitem.open_id == result.data.data.open_id) {
-            result.data.data.memberIdx = idx
-          }
-        })
-        that.setData({ item: result.data.data });
-
-        let memberLehgth = result.data.data.members.length
-        if (memberLehgth > 0) {
-          that.setData({
-            last_time: result.data.data.members[memberLehgth - 1].add_time,  
-            hasMore: memberLehgth < 20 ? false : true
-          });
-        }
-
-        console.log('request success', result);
-      },
-
-      fail(error) {
-        console.log('request fail', error);
-      },
-    })
+    
   },
 
   doActivity : function(e) {

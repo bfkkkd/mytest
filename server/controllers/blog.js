@@ -2,6 +2,7 @@ const { mysql,message: { checkSignature } } = require('../qcloud')
 const activityObject = require('../lib/activity.js')
 const memberObject = require('../lib/member.js')
 const msgTemplate = require('../lib/msgTemplate.js')
+const moment = require('moment');
 
 
 /**
@@ -69,7 +70,7 @@ async function get(ctx, next) {
       for (let i = 0; i < activityIds.length; i++) {
         let activityId = Number(activityIds[i])
         let tmpMember = {}
-        member = await activityObject.getActivityMembers((activityId))
+        member = await activityObject.getActivityMembers(activityId, 10, moment().format().toString(), open_id)
         tmpMember.activityId = activityId
         tmpMember.memberData = []
         member.forEach(function (item, index) {
@@ -155,7 +156,9 @@ async function get(ctx, next) {
     var { activity_id } = ctx.query
     activity_id = Number(activity_id)
     let item = await activityObject.getActivityDetail(activity_id)
-    item.members = await activityObject.getActivityMembers(activity_id, 20)
+    item.memberCount = await activityObject.getActivityMemberCount(activity_id)
+
+    item.members = await activityObject.getActivityMembers(activity_id, 20, moment().format().toString(), open_id)
 
     item.joined = 0 
     item.user_info = JSON.parse(item.user_info)
@@ -171,6 +174,20 @@ async function get(ctx, next) {
 
     }
     ctx.state.data =  item
+
+  } else if (act == 'getActivityDetailMembers') {
+    var { activity_id, add_time } = ctx.query
+    add_time = add_time ? add_time : moment().format().toString(),
+    activity_id = Number(activity_id)
+    let members = await activityObject.getActivityMembers(activity_id, 20, add_time, open_id)
+
+    if (members.length > 0) {
+      for (let i = 0; i < members.length; i++) {
+        members[i].user_info = JSON.parse(members[i].user_info)
+      }
+
+    }
+    ctx.state.data = members
 
   } else if (act == 'getCustomerInfo') {
     let customerInfo = await memberObject.getCustomerInfo(open_id)

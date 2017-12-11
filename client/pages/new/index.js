@@ -126,7 +126,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     if (componentId == 'simpleDate') {
       let currDay = new Date();
       currDay.setDate(currDay.getDate() + detail.value);
-      let day = util.formatDay(currDay, "-");
+      let day = util.formatDay(currDay, "/");
       inputData['date'] = day
       inputData['time'] = '23:59'
     } else {

@@ -243,7 +243,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     console.log('to bottom');
   },
   onShareAppMessage() {
-    let title = `🔴${this.data.userInfo.nickName}给您发来了一个丰富社区神器`;
+    let title = `🔴${this.data.userInfo.nickName}给您发来了一个丰富社区助手`;
     return {
       title: title,
     }

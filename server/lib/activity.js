@@ -38,12 +38,24 @@ async function getMemberCount(activityIdArray) {
 
 }
 
-async function getActivityMembers(activityId, limit = 20) {
+async function getActivityMembers(activityId, limit = 20, start, open_id) {
   return mysql('activityMember')
-    .join('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
-    .select('cSessionInfo.open_id', 'cSessionInfo.user_info', 'activityMember.remark', 'activityMember.add_time')
-    .where('activityMember.activity_id', activityId).limit(limit)
+    .leftJoin('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
+    .leftJoin('customerInfo', 'customerInfo.open_id', 'activityMember.open_id')
+    .select('activityMember.open_id', 'cSessionInfo.user_info', 'activityMember.remark', 'activityMember.add_time', 'customerInfo.real_name', 'customerInfo.building', 'customerInfo.floor', 'customerInfo.unit', 'customerInfo.verified')
+    .where('activityMember.activity_id', activityId)
+    .andWhere('activityMember.add_time', '<', start)
+    .orderByRaw('activityMember.open_id = ? desc', open_id)
+    .orderBy('add_time', 'desc')
+    .limit(limit)
 
+}
+
+async function getActivityMemberCount(activityId) {
+  return mysql('activityMember')
+    .count('open_id as count')
+    .where('activity_id', activityId)
+    .first()
 }
 
 async function getJoined(activityIdArray, openId) {
@@ -80,6 +92,7 @@ async function del(activityId, open_id) {
 async function getActivityTypes() {
   return mysql('activityType')
     .select('id', 'name')
+    .where('is_show', '1')
     .limit(20)
     .orderBy('sort_id')
 
@@ -89,6 +102,7 @@ module.exports = {
   getActivitis,
   getMyActivitis,
   getActivityDetail,
+  getActivityMemberCount,// not include mine
   getMemberCount,
   getActivityMembers,
   getJoined,

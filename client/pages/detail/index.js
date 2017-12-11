@@ -12,6 +12,9 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     item:{},
     pending: 0,
     userinfo: {},
+    last_time : '',
+    loadingMore : false,
+    hasMore: true,
   },
 
   onLoad(option) {
@@ -46,6 +49,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         })
         that.setData({ item: result.data.data });
 
+        let memberLehgth = result.data.data.members.length
+        if (memberLehgth > 0) {
+          that.setData({
+            last_time: result.data.data.members[memberLehgth - 1].add_time,  
+            hasMore: memberLehgth < 20 ? false : true
+          });
+        }
+
         console.log('request success', result);
       },
 
@@ -65,7 +76,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     var item = this.data.item
     item.joined = e.detail.target.dataset.type == 'del' ? false : true
 
-    if (item.joined && remark == item.members[item.memberIdx].remark) {
+    if (item.joined && item.members[item.memberIdx] && remark == item.members[item.memberIdx].remark) {
       return
     }
 
@@ -97,13 +108,20 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
               item.members.forEach(function (mitem, idx) {
                 if (mitem.open_id == result.data.data.open_id) {
                   mitem.remark = remark
+                  item.memberIdx = idx
                   exist = true
                 }
               })
               if (exist == false) {
-                let newMember = { open_id: result.data.data.open_id, user_info: res.userInfo }
-                item.members.push(newMember)
-                item.memberIdx = item.members.length-1
+                let newMember = { 
+                  open_id: result.data.data.open_id, 
+                  remark: remark, 
+                  user_info: res.userInfo,  
+                  add_time: util.formatDayAndTime(new Date())
+                }
+                item.members.unshift(newMember)
+                item.memberIdx = 0
+                item.memberCount.count++
               }
               item.joined = 1
               that.setData({
@@ -115,6 +133,9 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
         } else if (act == 'del') {
           item.joined = 0
+          item.members.splice(item.memberIdx, 1)
+          item.memberIdx = -1
+          item.memberCount.count--
           that.setData({
             item: item,
             pending: 0
@@ -133,6 +154,56 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         console.log('request fail', error);
       },
     })
+  },
+
+  getActivityMembers: function (reload = false) {
+    var that = this
+    let add_time = reload ? 0 : this.data.last_time
+    let activity_id = this.data.item.id
+    qcloud.request({
+      // 要请求的地址
+      url: config.service.blogUrl,
+
+      data: {
+        act: 'getActivityDetailMembers',
+        activity_id: activity_id, 
+        add_time: add_time
+      },
+
+      // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+      login: true,
+
+      success(result) {
+        let activityItem = that.data.item
+
+        result.data.data.forEach(function (item, index) {
+          if (item) {
+            item.add_time = util.formatDayAndTime(new Date(item.add_time))
+            activityItem.members.push(item)
+          }
+        })
+
+        that.setData({ 
+          item: activityItem,
+          hasMore: result.data.data.length < 20 ? false : true
+        });
+
+        console.log('request success', result);
+      }
+    })
+  },
+
+  onReachBottom: function () {
+
+    if (this.data.loading || !this.data.hasMore) return
+    this.setData({
+      loadingMore: true
+    });
+    this.getActivityMembers()
+    this.setData({
+      loadingMore: false
+    });
+    console.log('to bottom');
   },
 
   onShareAppMessage() {

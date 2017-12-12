@@ -102,6 +102,10 @@ Page({
     let that = this
     let id = e.currentTarget.dataset.id
 
+    wx.showLoading({
+      title: '删除中',
+    })
+
     qcloud.request({
       // 要请求的地址
       url: config.service.blogUrl,
@@ -115,10 +119,12 @@ Page({
 
       success(result) {
         that.onLoad()
+        wx.hideLoading()
         console.log('request success', result);
       },
 
       fail(error) {
+        wx.hideLoading()
         console.log('request fail', error);
       },
     })

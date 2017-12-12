@@ -3,10 +3,10 @@
 
 <view class="container">
   <view class="doc-title" style='min-height:50rpx'>
-  <image class="userinfo-avatar" src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>{{item.title}}
+  {{item.title}}
   </view>
   <view class="title_right zan-font-12 zan-c-gray-darker">
-  {{item.user_info.nickName}} 发起，{{item.end_time}} 截止
+  {{item.end_time}} 截止，By {{item.user_info.nickName}} <image class="userinfo-avatar" style='height:45rpx;width:45rpx' src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   </view>
   <view class="zan-panel" wx:if="{{ item.img_urls[0] }}">
       <view class="zan-cell zan-field">
@@ -16,9 +16,9 @@
       </view>
   </view>
   <view wx:if="{{item.description}}" class="zan-panel">
-    <view class="row-data">
+    <view class="row-data" style='height:auto'>
       <view class="zan-font-12">
-        {{item.description}}
+        <text>{{item.description}}</text>
       </view>
     </view>
   </view>
@@ -31,13 +31,13 @@
       </view>
       <view class='demo__item' style="display:flex;flex-direction:column;flex-wrap: wrap;padding:0 0 0 10rpx;">
         <view style='height:40rpx;display:flex;justify-content: space-between;'>
-        <view class='demo__item zan-font-10 zan-c-gray-darker' style='display:flex;flex-direction:row;flex: 0 0 400rpx'>
+        <view class='demo__item zan-font-10 zan-c-gray-darker' style='display:flex;flex-direction:row;'>
         <view wx:if="{{member.building}}">{{member.building}}座{{member.floor}}层{{member.unit}}单元，</view>
         <view>
         {{member.real_name || member.user_info.nickName}}:
         </view>
         </view>
-        <view class='demo__item zan-font-10 zan-c-gray' style='flex: 0 0 200rpx'>
+        <view class='demo__item zan-font-10 zan-c-gray' style='flex: 0 0 200rpx;text-align: right'>
         {{member.add_time}}
         </view>
         </view>

@@ -3,7 +3,7 @@
   height: 200rpx;
 }
 .demo {
-  padding: 60rpx 0 70rpx 0 ;
+  padding: 50rpx 0 30rpx 0 ;
   display: flex;
 }
 .demo__item {
@@ -27,4 +27,5 @@
   text-align: center;
   top:150rpx;
   font-size:35rpx;
+  padding-top: 20rpx;
 }

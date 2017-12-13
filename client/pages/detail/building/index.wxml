@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="zan-panel-title">{{building}}座</view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-font-12" wx:for="{{floors}}" wx:for-item="floor" wx:key="idx" wx:for-index="idx">
+        <view class="zan-col zan-col-4" style='text-align: center' wx:for="{{units}}" wx:for-item="unit" wx:key="idx2" wx:for-index="idx2">
+          {{floor}}0{{unit}}<view wx:if="{{buildingData[floor][unit] == 1}}" class="zan-icon zan-icon-checked" style="font-size: 30rpx; color:deeppink"></view>
+        </view>
+    </view>
+  </view>
+
+</view>

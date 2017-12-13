@@ -3,6 +3,7 @@
         "pages/index/index",
         "pages/detail/index",
         "pages/detail/charts/index",
+        "pages/detail/building/index",
         "pages/new/index",
         "pages/mine/index",
         "pages/myact/index",

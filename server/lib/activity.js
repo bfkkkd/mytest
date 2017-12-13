@@ -101,6 +101,26 @@ async function getActivityTypes() {
 
 }
 
+async function getActivityBuildingCount(activityId) {
+  return mysql('activityMember')
+    .leftJoin('customerInfo', 'customerInfo.open_id', 'activityMember.open_id')
+    .select('customerInfo.building')
+    .count('activityMember.open_id as count')
+    .where('activityMember.activity_id', activityId)
+    .groupBy('building')
+    .orderBy('building')
+}
+
+async function getActivityBuildingUnits(activityId,Building) {
+  return mysql('activityMember')
+    .leftJoin('customerInfo', 'customerInfo.open_id', 'activityMember.open_id')
+    .select('customerInfo.building', 'customerInfo.floor', 'customerInfo.unit')
+    .where('activityMember.activity_id', activityId)
+    .andWhere('customerInfo.building', Building)
+    .orderBy('floor')
+    .orderBy('unit')
+}
+
 module.exports = {
   getActivitis,
   getMyActivitis,
@@ -111,5 +131,7 @@ module.exports = {
   getJoined,
   getJoinedCount,
   del,
-  getActivityTypes
+  getActivityTypes,
+  getActivityBuildingCount,
+  getActivityBuildingUnits
 }

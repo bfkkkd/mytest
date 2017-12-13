@@ -3,8 +3,8 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-//var host = 'https://yodvq9vz.qcloud.la';
-var host = 'https://442041049.yournana.club';
+var host = 'https://yodvq9vz.qcloud.la';
+//var host = 'https://442041049.yournana.club';
 
 var config = {
 

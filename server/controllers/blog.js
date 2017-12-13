@@ -208,6 +208,15 @@ async function get(ctx, next) {
     ctx.state.data = customerInfo
   } else if (act == 'getActivityTypes') {
     ctx.state.data = await activityObject.getActivityTypes()
+  } else if (act == 'getActivityBuildingCount') {
+    var { activity_id } = ctx.query
+    activity_id = Number(activity_id)
+    ctx.state.data = await activityObject.getActivityBuildingCount(activity_id)
+  } else if (act == 'getActivityBuildingUnits') {
+    var { activity_id, building } = ctx.query
+    activity_id = Number(activity_id)
+    building = Number(building)
+    ctx.state.data = await activityObject.getActivityBuildingUnits(activity_id, building)
   } else {
     ctx.state.data = act
   }

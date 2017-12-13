@@ -1,28 +1,15 @@
 <view class="container">
   <view class="zan-panel-title">占比情况</view>
   <view class="zan-panel">
-    <view class="zan-cell zan-font-12">
+    <view class="zan-cell zan-font-12" wx:for="{{buildingData}}" wx:key="building" wx:for-item="item" wx:for-index="idx" bindtap="openBuilding" data-building="{{item.building}}">
         <view class="zan-col zan-col-4">
-          12座
+          {{item.building || '?'}}座
         </view>
         <view class="zan-col zan-col-16">
-          <progress percent="20" active />
+          <progress percent="{{item.count/192*100}}" active />
         </view>
         <view class="zan-col zan-col-4" style='text-align: right'>
-          12人
-        </view>
-    </view>
-  </view>
-  <view class="zan-panel">
-    <view class="zan-cell zan-font-12">
-        <view class="zan-col zan-col-4">
-          13座
-        </view>
-        <view class="zan-col zan-col-16">
-          <progress percent="24.32" active />
-        </view>
-        <view class="zan-col zan-col-4" style='text-align: right'>
-          13人
+          {{item.count}}人
         </view>
     </view>
   </view>

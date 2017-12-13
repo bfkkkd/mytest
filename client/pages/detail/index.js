@@ -239,4 +239,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     })
   },
 
+  goChart() {
+    wx.navigateTo({ url: 'charts/index?id=' + this.data.item.id });
+  },
+
 }))

@@ -41,17 +41,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
       success(result) {
         let activityMembers = that.data.activityMembers
-        let memberCount = that.data.memberCount
 
         result.data.data.forEach(function (item, index) {
           if (item) {
-            memberCount[item.activityId] = item.memberData.length
             activityMembers[item.activityId] = item.memberData
           }
         })
 
         that.setData({ activityMembers: activityMembers });
-        that.setData({ memberCount: memberCount });
 
         console.log('request success', result);
       }
@@ -78,6 +75,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         let activityIds = []
         let reJoinedCount = reload ? [] : that.data.joinedCount
         let items = reload? [] : that.data.items
+        let memberCount = that.data.memberCount
 
         result.data.data.activityRows.forEach(function (item, index) {
           activityIds.push(item.id)
@@ -88,9 +86,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           reJoinedCount[item.activity_id] = item.joined
         });
 
+        result.data.data.memberCount.forEach(function (item, index) {
+          memberCount[item.activity_id] = item.count
+        });
+
         that.setData({
           items: items,
           joinedCount: reJoinedCount,
+          memberCount: memberCount,
           loading: false,
           lastId: activityIds[activityIds.length-1],
           hasMore: activityIds.length < 20 ? false : true
@@ -102,10 +105,16 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       },
 
       fail(error) {
+        that.setData({
+          loading: false,
+        });
         console.log('request fail', error);
       },
 
       complete() {
+        that.setData({
+          loading: false,
+        });
         console.log('request complete');
       }
     })
@@ -193,7 +202,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         act: 'join',
         activity_id: id,
         form_id: formId,
-        join: joinedCount[id]
+        join: joinedCount[id],
+        remark: '+1'
       },
 
       login: true,

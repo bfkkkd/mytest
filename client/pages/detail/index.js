@@ -24,6 +24,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     wx.getUserInfo({
       success: function (res) {
         that.setData({ userInfo: res.userInfo });
+        console.log(that.data.userInfo)
         qcloud.request({
           // 要请求的地址
           url: config.service.blogUrl,
@@ -41,7 +42,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
             result.data.data.end_time = util.formatDayAndTime(new Date(result.data.data.end_time))
             result.data.data.members.forEach(function (mitem, idx) {
               mitem.add_time = util.formatDayAndTime(new Date(mitem.add_time))
-              if (mitem.open_id == that.data.userInfo.open_id) {
+              mitem.address = util.formatAddress(mitem.building, mitem.floor, mitem.unit)
+              if (mitem.open_id == result.data.data.my_open_id) {
                 result.data.data.memberIdx = idx
               }
             })
@@ -180,12 +182,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         result.data.data.forEach(function (item, index) {
           if (item) {
             item.add_time = util.formatDayAndTime(new Date(item.add_time))
+            item.address = util.formatAddress(item.building, item.floor, item.unit)
             activityItem.members.push(item)
           }
         })
 
         that.setData({ 
           item: activityItem,
+          last_time: result.data.data[result.data.data.length - 1].add_time,
           hasMore: result.data.data.length < 20 ? false : true
         });
 
@@ -226,6 +230,12 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     wx.previewImage({
       current: that.data.item.img_urls[id],
       urls: that.data.item.img_urls
+    })
+  },
+
+  goMine(e) {
+    wx.navigateTo({
+      url: '/pages/myinfo/index'
     })
   },
 

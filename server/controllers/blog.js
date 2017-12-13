@@ -70,15 +70,15 @@ async function get(ctx, next) {
       for (let i = 0; i < activityIds.length; i++) {
         let activityId = Number(activityIds[i])
         let tmpMember = {}
-        member = await activityObject.getActivityMembers(activityId, 10, moment().format().toString(), open_id)
+        member = await activityObject.getActivityMembers(activityId, 10, moment().format().toString())
         tmpMember.activityId = activityId
         tmpMember.memberData = []
         member.forEach(function (item, index) {
           itemJson = JSON.parse(item.user_info)
           tmpMember.memberData.push(
             {
-              'avatarUrl': itemJson.avatarUrl,
-              'nickName': itemJson.nickName
+              'avatarUrl': itemJson ? itemJson.avatarUrl : '',
+              'nickName': itemJson ? itemJson.nickName : ''
             }
           )
         })
@@ -121,7 +121,7 @@ async function get(ctx, next) {
         }
 
         if (returnData.state == 1) {
-          returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem })
+          returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem, remark: remark })
         }
       }
 
@@ -163,6 +163,7 @@ async function get(ctx, next) {
     item.joined = 0 
     item.user_info = JSON.parse(item.user_info)
     item.img_urls = JSON.parse(item.img_urls)
+    item.my_open_id = open_id
 
     if (item.members.length > 0) {
       for (let i = 0; i < item.members.length; i++) {
@@ -179,7 +180,7 @@ async function get(ctx, next) {
     var { activity_id, add_time } = ctx.query
     add_time = add_time ? add_time : moment().format().toString(),
     activity_id = Number(activity_id)
-    let members = await activityObject.getActivityMembers(activity_id, 20, add_time, open_id)
+    let members = await activityObject.getActivityMembers(activity_id, 20, add_time)
 
     if (members.length > 0) {
       for (let i = 0; i < members.length; i++) {

@@ -16,12 +16,12 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "new",
-					"pathName": "pages/mine/index",
+					"pathName": "pages/detail/charts/index",
 					"query": "id=2"
 				}
 			]

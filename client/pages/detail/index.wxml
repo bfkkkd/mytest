@@ -27,18 +27,23 @@
     <view class="zan-cell zan-field" wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
       <view class='demo'>
       <view class='demo__item' style='flex: 0 0 100rpx'>
-      <image class="userinfo-avatar" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+      <image class="userinfo-avatar {{ member.verified ? 'avatar-border' : ''}}" src="{{member.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
       </view>
       <view class='demo__item' style="display:flex;flex-direction:column;flex-wrap: wrap;padding:0 0 0 10rpx;">
         <view style='height:40rpx;display:flex;justify-content: space-between;'>
         <view class='demo__item zan-font-10 zan-c-gray-darker' style='display:flex;flex-direction:row;'>
-        <view wx:if="{{member.building}}">{{member.building}}座{{member.floor}}层{{member.unit}}单元，</view>
+        <view wx:if="{{member.building}}">{{member.address}}，</view>
         <view>
         {{member.real_name || member.user_info.nickName}}:
         </view>
         </view>
         <view class='demo__item zan-font-10 zan-c-gray' style='flex: 0 0 200rpx;text-align: right'>
+        <view>
         {{member.add_time}}
+        </view>
+        <view wx:if="{{item.my_open_id==member.open_id}}" class="zan-font-12 zan-c-red" style='padding-top: 20rpx' bindtap="goMine">
+        完善个人信息>
+        </view>
         </view>
         </view>
         <view class='zan-font-12' style='height:40rpx'>

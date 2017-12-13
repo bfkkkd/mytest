@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="zan-panel-title">占比情况</view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-font-12">
+        <view class="zan-col zan-col-4">
+          12座
+        </view>
+        <view class="zan-col zan-col-16">
+          <progress percent="20" active />
+        </view>
+        <view class="zan-col zan-col-4" style='text-align: right'>
+          12人
+        </view>
+    </view>
+  </view>
+  <view class="zan-panel">
+    <view class="zan-cell zan-font-12">
+        <view class="zan-col zan-col-4">
+          13座
+        </view>
+        <view class="zan-col zan-col-16">
+          <progress percent="24.32" active />
+        </view>
+        <view class="zan-col zan-col-4" style='text-align: right'>
+          13人
+        </view>
+    </view>
+  </view>
+
+</view>

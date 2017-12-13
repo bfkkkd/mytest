@@ -18,7 +18,7 @@
           <view class="zan-icon zan-icon-contact" style="font-size: 30rpx; color:cornflowerblue"></view>
           ({{memberCount[item.id] || '0'}})
           </view>
-          <view class="avatar-cell" style="display: flex; flex-direction: row-reverse;">
+          <view class="avatar-cell" style="display: flex; flex-direction: row;">
           <image wx:for="{{activityMembers[item.id]}}" wx:key="nickName" wx:for-index="idx" wx:for-item="item" class="userinfo-avatar" src="{{item.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
           </view>
         </view>

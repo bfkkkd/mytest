@@ -12,6 +12,7 @@ function sendMsg(open_id, form_id, data) {
   const appsecret = config.appSecret
   let activity = data.activity
   let member = data.member
+  let remrak = data.remark
 
   if (!activity || !member) {
     return -1
@@ -41,7 +42,7 @@ function sendMsg(open_id, form_id, data) {
           "color": "#173177"
         },
         "keyword3": {
-          "value": '',
+          "value": remrak,
           "color": "#173177"
         },
         "keyword4": {

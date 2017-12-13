@@ -27,8 +27,13 @@ function formatNumber(n) {
   return n[1] ? n : '0' + n
 }
 
+function formatAddress(building, floor, unit) {
+  return Number(building) + "-" + Number(floor) + formatNumber(Number(unit))
+}
+
 module.exports = {
   formatDayAndTime,
   formatDay,
   formatTime,
+  formatAddress,
 }

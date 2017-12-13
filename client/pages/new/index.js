@@ -214,7 +214,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
         if (result.data.code == '0' && result.data.data.activity_id) {
           that.initdefault()
           that.showZanToast('提交成功！');
-          wx.redirectTo({ url: '../detail/index?id=' + result.data.data.activity_id });
+          wx.navigateTo({ url: '../detail/index?id=' + result.data.data.activity_id });
         } else {
           that.showTopTips(result.data.data)
         }

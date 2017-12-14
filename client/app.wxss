@@ -54,3 +54,34 @@
   opacity: 1;
   top: 0
 }
+.grid {
+  display: flex;
+}
+
+.grid-cell {
+  flex: 1;
+}
+
+.cell-u-24 {
+  flex: 0 0 100%;
+}
+
+.cell-u-12 {
+  flex: 0 0 50%;
+}
+
+.cell-u-8 {
+  flex: 0 0 33.3333%;
+}
+
+.cell-u-6 {
+  flex: 0 0 25%;
+}
+
+.cell-u-4 {
+  flex: 0 0 16.6666%;
+}
+
+.cell-u-2 {
+  flex: 0 0 8.3333%;
+}

@@ -1,9 +1,9 @@
 <view class="container">
-  <view class="zan-panel-title">占比情况</view>
+  <view class="zan-panel-title" bindtap='goDetail'>返回主题</view>
   <view class="zan-panel">
     <view class="zan-cell zan-font-12" wx:for="{{buildingData}}" wx:key="building" wx:for-item="item" wx:for-index="idx" bindtap="openBuilding" data-building="{{item.building}}">
         <view class="zan-col zan-col-4">
-          {{item.building || '?'}}座
+          {{item.building ? item.building+'座' : '未知'}}
         </view>
         <view class="zan-col zan-col-16">
           <progress percent="{{item.count/192*100}}" active />

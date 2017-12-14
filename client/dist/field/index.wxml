@@ -5,21 +5,27 @@
       class="zan-cell__hd zan-field__title">{{ title }}</view>
     <textarea
       wx:if="{{ type === 'textarea' }}"
-      height="{{height || '800' }}rpx"
-      maxlength="{{maxlength || 200 }}"
+      auto-height
+      name="{{ name || componentId || '' }}"
+      value="{{ value }}"
       placeholder="{{ placeholder }}"
       class="zan-field__input zan-cell__bd {{ right ? 'zan-field__input--right' : '' }}"
       placeholder-class="zan-field__placeholder"
       bindinput="_handleZanFieldChange"
-      data-component-id="{{ componentId }}"></textarea>
+      bindfocus="_handleZanFieldFocus"
+      bindblur="_handleZanFieldBlur"
+      data-component-id="{{ componentId || '' }}"></textarea>
     <input
       wx:else
       type="{{ inputType || 'text' }}"
-      maxlength="{{maxlength || 20 }}"
+      name="{{ name || componentId || '' }}"
+      value="{{ value }}"
       placeholder="{{ placeholder }}"
       class="zan-field__input zan-cell__bd {{ right ? 'zan-field__input--right' : '' }}"
       placeholder-class="zan-field__placeholder"
       bindinput="_handleZanFieldChange"
-      data-component-id="{{ componentId }}"/>
+      bindfocus="_handleZanFieldFocus"
+      bindblur="_handleZanFieldBlur"
+      data-component-id="{{ componentId || '' }}"/>
   </view>
 </template>

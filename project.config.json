@@ -21,8 +21,8 @@
 				{
 					"id": 0,
 					"name": "new",
-					"pathName": "pages/detail/charts/index",
-					"query": "id=2"
+					"pathName": "pages/detail/index",
+					"query": "id=10"
 				}
 			]
 		}

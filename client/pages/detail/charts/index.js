@@ -41,14 +41,15 @@ Page({
 
       success(result) {
         console.log(result)
-        let buildingData = []
+        let buildingData = [{building: 0, count: 0}]
         result.data.data.forEach(function (item, index) {
-          if (item.floor) {
-            buildingData[item.floor] = []
-            buildingData[item.floor][item.unit] = 1
+          if (!item.building) {
+            buildingData[0].count += item.count
+          } else {
+            buildingData.push(item)
           }
         })
-        that.setData({ buildingData: result.data.data });
+        that.setData({ buildingData: buildingData });
       }
     })
   },
@@ -106,6 +107,10 @@ Page({
     var building = e.currentTarget.dataset.building
     if (!building) return
     wx.navigateTo({ url: '../building/index?id=' + this.data.activity_id + '&building=' + building });
+  },
+
+  goDetail() {
+    wx.redirectTo({ url: '../../detail/index?id=' + this.data.activity_id });
   },
 
 })

@@ -1,6 +1,7 @@
 <import src="/dist/toptips/index.wxml" />
 <import src="../../dist/loadmore/index.wxml" />
 
+<template wx:if="{{loading}}" is="zan-loadmore" data="{{loading: true}}" />
 <view class="container">
   <view class="doc-title" style='min-height:50rpx'>
   {{item.title}}
@@ -22,7 +23,13 @@
       </view>
     </view>
   </view>
-  <view class="zan-panel-title" bindtap='goChart'>参与人：({{item.memberCount.count}})</view>
+  <view class='row-data zan-font-14 zan-c-gray-darker' style='padding:50rpx 50rpx 0 40rpx;'>
+    <view class="zan-col zan-col-14" style='text-align: left' bindtap='goChart'>参与人：({{item.memberCount.count}})</view>
+    <view class="zan-col zan-col-10" style='text-align: right' bindtap='goChart'>
+    <image style="width: 90rpx; height: 48rpx;" mode="scaleToFill" src="../../images/chart.png"></image>
+    </view>
+  </view>
+  
   <view class="zan-panel">
     <view class="zan-cell zan-field" wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
       <view class='demo'>
@@ -59,22 +66,51 @@
   </view>
 
 </view>
+<form report-submit="true" bindsubmit="doActivity"> 
 <view class="bottom">
   <view class="zan-panel" >
-    <form report-submit="true" bindsubmit="doActivity"> 
-    <view class="zan-cell zan-field row-data">
-      <input
-        type="text"
-        value="{{ item.members[item.memberIdx].remark || '+1' }}"
-        name="remark"
-        class="zan-field__input zan-cell__bd" style="border:1rpx solid #e5e5e5;border-radius:10rpx;padding:9rpx 9rpx;"/>
-      <view class="zan-cell__ft">　
+    <view class="zan-cell zan-field row-data grid" style='text-align: left'>
+      <view class='grid-cell'>
+        <input
+          type="text"
+          value="{{ item.members[item.memberIdx].remark || '+1' }}"
+          name="remark"
+          class="zan-field__input zan-cell__bd" style="border:1rpx solid #e5e5e5;border-radius:10rpx;padding:9rpx 9rpx;"/>
+      </view>
+      <view class='grid-cell cell-u-6' style='text-align: right'>
         <button wx:if="{{pending}}" class="zan-btn zan-btn--small zan-btn--plain zan-btn--loading">加载</button>
-        <button form-type="submit" wx:else data-id="{{item.id}}" data-type="join" class="zan-btn zan-btn--small zan-btn--primary zan-btn--plain" >{{ item.joined ? '更新' : '加入'}}</button>
-        <button form-type="submit" wx:if="{{item.joined}}" data-id="{{item.id}}" data-type="del" class="zan-btn zan-btn--small zan-btn--plain zan-btn--warn">退出</button>
+          <button form-type="submit" wx:else data-id="{{item.id}}" data-type="join" class="zan-btn zan-btn--small zan-btn--primary zan-btn--plain" >{{ item.joined ? '更新' : '加入'}}</button>
+      </view>
+      <view class='grid-cell cell-u-4' style='text-align: right' bindtap="togglePopup">
+        <view class="zan-icon zan-icon-wap-nav" style="font-size: 50rpx; color:green"></view>
       </view>
     </view>
-    </form>
   </view>
 </view>
+<view class="popup-example--bottom zan-popup zan-popup--bottom {{ showPopup ? 'zan-popup--show' : ''}}">
+    <view class="zan-popup__container">
+      <view class="zan-btns grid">
+        <view class='grid-cell' style='text-align: center;'>
+        <button class="zan-btn zan-btn zan-btn--small" bindtap='goNew'>
+          <view class="zan-icon zan-icon-add-o" style="color:red"></view>
+          创建活动
+        </button>
+        </view>
+        <view class='grid-cell' style='text-align: center;'>
+          <button open-type="share" class="zan-btn zan-btn--small">
+            <view class="zan-icon zan-icon-upgrade" style="color:red"></view>
+            分享好友
+          </button>
+        </view>
+        <view class='grid-cell' style='text-align: center;'>
+          <button form-type="submit" wx:if="{{item.joined}}" data-id="{{item.id}}" data-type="del" class="zan-btn zan-btn--small">
+            <view class="zan-icon zan-icon-delete" style="color:darkgrey"></view>
+            退出活动
+          </button>
+        </view>
+      </view>
+      <view style='height:140rpx'></view>
+    </view>
+</view>
+</form>
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>

@@ -8,23 +8,42 @@ var config = require('../../config');
 
 Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   data: {
+    activity_id: 0,
     message: '',
     item:{},
     pending: 0,
     userinfo: {},
     last_time : '',
     loadingMore : false,
+    loading: false,
     hasMore: true,
+    showPopup: false
+  },
+
+  initData() {
+    this.setData({
+      pending: 0,
+      last_time: '',
+      loadingMore: false,
+      loading: false,
+      hasMore: true,
+    })
   },
 
   onLoad(option) {
     let that = this
     var activity_id = Number(option.id)
     if (activity_id < 1) return
+    that.setData({ activity_id: activity_id })
+    this.loadActivity(activity_id)
+  },
+
+  loadActivity(activity_id) {
+    let that = this
+    that.setData({ loading: true })
     wx.getUserInfo({
       success: function (res) {
         that.setData({ userInfo: res.userInfo });
-        console.log(that.data.userInfo)
         qcloud.request({
           // 要请求的地址
           url: config.service.blogUrl,
@@ -56,11 +75,12 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
                 hasMore: memberLehgth < 20 ? false : true
               });
             }
-
+            that.setData({ loading: false })
             console.log('request success', result);
           },
 
           fail(error) {
+            that.setData({ loading: false })
             console.log('request fail', error);
           },
         })
@@ -198,6 +218,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     })
   },
 
+  onPullDownRefresh: function () {
+    console.log('refresh');
+    if (this.data.loading) return 
+    this.initData()
+    this.loadActivity(this.data.activity_id)
+    wx.stopPullDownRefresh()
+  },
+
   onReachBottom: function () {
 
     if (this.data.loading || !this.data.hasMore) return
@@ -239,8 +267,26 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     })
   },
 
+  goHome() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
+  },
+
+  goNew() {
+    wx.switchTab({
+      url: '/pages/new/index'
+    })
+  },
+
   goChart() {
     wx.navigateTo({ url: 'charts/index?id=' + this.data.item.id });
+  },
+
+  togglePopup() {
+    this.setData({
+      showPopup: !this.data.showPopup
+    });
   },
 
 }))

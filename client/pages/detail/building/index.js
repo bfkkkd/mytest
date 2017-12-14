@@ -27,10 +27,15 @@ Page({
   onLoad: function (options) {
     let activity_id = Number(options.id)
     let building = Number(options.building)
+    let buildingData = []
     let that = this
+    for (let i=1; i<=32; i++) {
+      buildingData[i] = []
+    }
     this.setData({ 
       activity_id: activity_id,
-      building: building
+      building: building,
+      buildingData: buildingData
     });
     qcloud.request({
       // 要请求的地址
@@ -48,12 +53,9 @@ Page({
       success(result) {
         console.log(result)
         
-        let buildingData = []
+        let buildingData = that.data.buildingData
         result.data.data.forEach(function (item, index) {
-          if (item.floor) {
-            buildingData[item.floor] = []
             buildingData[item.floor][item.unit] = 1
-          }
         })
         that.setData({ buildingData: buildingData });
       }

@@ -98,35 +98,44 @@ Page({
 
   delActivity : function(e) {
     console.log(e)
-
     let that = this
     let id = e.currentTarget.dataset.id
 
-    wx.showLoading({
-      title: '删除中',
-    })
+    wx.showModal({
+      title: '提示',
+      content: '删除将无法找回，确认删除吗？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '删除中',
+          })
 
-    qcloud.request({
-      // 要请求的地址
-      url: config.service.blogUrl,
+          qcloud.request({
+            // 要请求的地址
+            url: config.service.blogUrl,
 
-      data: {
-        act: 'del',
-        activity_id: id,
-      },
+            data: {
+              act: 'del',
+              activity_id: id,
+            },
 
-      login: true,
+            login: true,
 
-      success(result) {
-        that.onLoad()
-        wx.hideLoading()
-        console.log('request success', result);
-      },
+            success(result) {
+              that.onLoad()
+              wx.hideLoading()
+              console.log('request success', result);
+            },
 
-      fail(error) {
-        wx.hideLoading()
-        console.log('request fail', error);
-      },
+            fail(error) {
+              wx.hideLoading()
+              console.log('request fail', error);
+            },
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   },
 

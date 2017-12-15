@@ -91,16 +91,19 @@ async function get(ctx, next) {
     var { activity_id,join,form_id, remark } = ctx.query
     activity_id = Number(activity_id)
     if (join == 'true') {
+
+      let activityItem = await activityObject.getActivityDetail(activity_id)
+      let memberItem = await memberObject.getCustomerInfo(open_id)
+      let autohrItem = await memberObject.getCustomerInfo(activityItem.open_id)
+
       let returnData = {
         activity_id: activity_id,
         open_id: open_id,
+        user_info: memberItem,
         act: 'join',
-        state : 0,
-        sendMsg : 0,
+        state: 0,
+        sendMsg: 0,
       }
-
-      let activityItem = await activityObject.getActivityDetail(activity_id)
-      let memberItem = await memberObject.getCustomerInfo(activityItem.open_id)
       
       if (activityItem.only_verified && !memberItem.verified) {
         throw new Error("请先实名认证后再参与！")
@@ -121,7 +124,7 @@ async function get(ctx, next) {
         }
 
         if (returnData.state == 1) {
-          returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, member: memberItem, remark: remark })
+          returnData.sendMsg = await msgTemplate.sendMsg(open_id, form_id, { activity: activityItem, autohr: autohrItem, member: memberItem, remark: remark })
         }
       }
 

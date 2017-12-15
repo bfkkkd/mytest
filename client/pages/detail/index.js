@@ -136,12 +136,14 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
                 }
               })
               if (exist == false) {
-                let newMember = { 
+                let tmpUserInfo = result.data.data.user_info
+                let newMember = Object.assign({ 
                   open_id: result.data.data.open_id, 
                   remark: remark, 
                   user_info: res.userInfo,  
-                  add_time: util.formatDayAndTime(new Date())
-                }
+                  add_time: util.formatDayAndTime(new Date()),
+                  address: util.formatAddress(tmpUserInfo.building, tmpUserInfo.floor, tmpUserInfo.unit)
+                }, tmpUserInfo)
                 item.members.unshift(newMember)
                 item.memberIdx = 0
                 item.memberCount.count++

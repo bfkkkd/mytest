@@ -12,7 +12,12 @@ function sendMsg(open_id, form_id, data) {
   const appsecret = config.appSecret
   let activity = data.activity
   let member = data.member
-  let remrak = data.remark
+  let autohr = data.autohr
+  member.unit = member.unit.toString()
+  member.unit = member.unit[1] ? member.unit : '0' + member.unit
+  member.address = (member.building && member.floor && member.unit) ? member.building + "-" + member.floor + member.unit : "请完善个人信息"
+
+  let remrak = data.remark + "(" + member.address + ")"
 
   if (!activity || !member) {
     return -1
@@ -38,19 +43,19 @@ function sendMsg(open_id, form_id, data) {
           "color": "#173177"
         },
         "keyword2": {
-          "value": member.real_name,
+          "value": autohr.real_name,
           "color": "#173177"
         },
         "keyword3": {
           "value": remrak,
-          "color": "#173177"
+          "color": "#ff0033"
         },
         "keyword4": {
-          "value": member.phone,
+          "value": autohr.phone,
           "color": "#173177"
         },
         "keyword5": {
-          "value": member.building + '座' + member.floor + '层' + member.unit + "单元",
+          "value": autohr.building + "座" + autohr.floor + "层" + autohr.unit + "单元",
           "color": "#173177"
         }
       }

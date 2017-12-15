@@ -24,11 +24,12 @@
     </view>
   </view>
   <view class='row-data zan-font-14 zan-c-gray-darker' style='padding:50rpx 50rpx 0 40rpx;'>
-    <view class="zan-col zan-col-14" style='text-align: left' bindtap='goChart'>参与人：({{item.memberCount.count}})</view>
-    <view class="zan-col zan-col-10" style='text-align: right' bindtap='goChart'>
-    <image style="width: 90rpx; height: 48rpx;" mode="scaleToFill" src="../../images/chart.png"></image>
+    <view class="zan-col zan-col-2" style='text-align: left;vertical-align: middle;' bindtap='goChart'>
+    <image style="width: 48rpx; height: 48rpx;" mode="scaleToFill" src="../../images/chart.png"></image>
     </view>
-  </view>
+    <view class="zan-col zan-col-10" style='text-align: left;vertical-align: middle;' bindtap='goChart'>
+    参与人：({{item.memberCount.count}})</view>
+    </view>
   
   <view class="zan-panel">
     <view class="zan-cell zan-field" wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
@@ -88,6 +89,7 @@
   </view>
 </view>
 <view class="popup-example--bottom zan-popup zan-popup--bottom {{ showPopup ? 'zan-popup--show' : ''}}">
+<view class="zan-popup__mask" style='background:0' catchtap="togglePopup"></view>
     <view class="zan-popup__container">
       <view class="zan-btns grid">
         <view class='grid-cell' style='text-align: center;'>

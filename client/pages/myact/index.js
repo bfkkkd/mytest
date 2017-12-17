@@ -31,18 +31,15 @@ Page({
 
       success(result) {
         let activityMembers = that.data.activityMembers
-        let memberCount = that.data.memberCount
 
         result.data.data.forEach(function (item, index) {
           if (item) {
-            memberCount[item.activityId] = item.memberData.length
             activityMembers[item.activityId] = item.memberData
           }
         })
 
         that.setData({ 
           activityMembers: activityMembers,
-          memberCount: memberCount,
           loading: false
         });
 
@@ -68,6 +65,7 @@ Page({
       success(result) {
         let activityIds = []
         let reJoinedCount = []
+        let memberCount = that.data.memberCount
 
         result.data.data.activityRows.forEach(function (item, index) {
           activityIds.push(item.id)
@@ -77,8 +75,15 @@ Page({
           reJoinedCount[item.activity_id] = item.joined
         }); 
 
-        that.setData({ items: result.data.data.activityRows });
-        that.setData({ joinedCount: reJoinedCount });
+        result.data.data.memberCount.forEach(function (item, index) {
+          memberCount[item.activity_id] = item.count
+        });
+
+        that.setData({ 
+          items: result.data.data.activityRows, 
+          joinedCount: reJoinedCount,
+          memberCount: memberCount
+        });
         console.log('request success', result);
 
         that.getActivityMembers(activityIds)

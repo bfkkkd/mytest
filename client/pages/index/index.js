@@ -1,5 +1,6 @@
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var cache = require('../../vendor/utils/cache.js');
 var Zan = require('../../dist/index');
 
 // 引入配置
@@ -122,6 +123,20 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   getActivityTypes() {
     var that = this
+    let types = cache.get('activity_types')
+    if (types) {
+      console.log(types)
+      let type_id = this.data.type_id
+      type_id = type_id ? type_id : types.list[0].id
+
+      this.setData({
+        types: types,
+        type_id: type_id
+      });
+      that.getActivity()
+      return
+    }
+
     qcloud.request({
       // 要请求的地址
       url: config.service.blogUrl,
@@ -142,6 +157,9 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         result.data.data.forEach(function (item, index) {
           item.title = item.name
         })
+
+        cache.put('activity_types', types, 30)
+
         that.setData({
           types: types,
           type_id: type_id

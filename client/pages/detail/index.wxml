@@ -95,13 +95,13 @@
         <view class='grid-cell' style='text-align: center;'>
         <button class="zan-btn zan-btn zan-btn--small" bindtap='goNew'>
           <view class="zan-icon zan-icon-add-o" style="color:red"></view>
-          创建活动
+          我要发布
         </button>
         </view>
         <view class='grid-cell' style='text-align: center;'>
           <button open-type="share" class="zan-btn zan-btn--small">
             <view class="zan-icon zan-icon-upgrade" style="color:red"></view>
-            分享好友
+            我要分享
           </button>
         </view>
         <view class='grid-cell' style='text-align: center;'>

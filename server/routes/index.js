@@ -36,4 +36,8 @@ router.post('/message', controllers.message.post)
 router.get('/blog', validationMiddleware, controllers.blog.get)
 router.post('/blog', validationMiddleware, controllers.blog.post)
 
+// house
+router.get('/house', validationMiddleware, controllers.house.get)
+router.post('/house', validationMiddleware, controllers.house.post)
+
 module.exports = router

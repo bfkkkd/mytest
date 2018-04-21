@@ -3,8 +3,8 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-//var host = 'https://yodvq9vz.qcloud.la';
-var host = 'https://442041049.yournana.club';
+var host = 'https://yodvq9vz.qcloud.la';
+//var host = 'https://442041049.yournana.club';
 
 var config = {
 
@@ -25,7 +25,10 @@ var config = {
         uploadUrl: `${host}/weapp/upload`,
 
         // 测试的请求地址，用于测试会话
-        blogUrl: `${host}/weapp/blog`
+        blogUrl: `${host}/weapp/blog`,
+
+        // 测试的请求地址，用于测试会话
+        houseUrl: `${host}/weapp/house`
     }
 };
 

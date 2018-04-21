@@ -253,7 +253,7 @@ async function post(ctx, next) {
   } else if (act == 'setCustomerInfo') {
     var { field, value } = ctx.request.body
     let updateData = {}
-    if (field == 'real_name' || field == 'phone' || field == 'building' || field == 'floor' || field == 'unit' || field == 'published') {
+    if (field == 'real_name' || field == 'phone' || field == 'building' || field == 'floor' || field == 'unit' || field == 'published' || field == 'house_id') {
       updateData[field] = value
     } else if (field == 'address') {
       if (value.building && value.floor && value.unit) {

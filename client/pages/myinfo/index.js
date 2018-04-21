@@ -17,6 +17,10 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
     floors: [],
     units: [],
     pending: '',
+    houseId : 0,
+    houseName : '',
+    allHouse : [],
+    houseIndex : 0,
     saved: true,
   },
 
@@ -25,26 +29,85 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
    */
   onLoad: function (options) {
     this.initCustomerInfo()
-    let buildings = []
-    let floors = []
-    let units = []
-    buildings[0] = '？栋'
-    floors[0] = '？层'
-    units[0] = '？单'
-    for (let i=0; i<20; i++) {
-      buildings[i+1] = (i + 1) + "栋"
-    }
-    for (let i = 0; i < 32; i++) {
-      floors[i + 1] = (i + 1) + "层"
-    }
-    for (let i = 0; i < 6; i++) {
-      units[i + 1] = "0" + (i + 1) + "单元"
-    }
+  },
 
-    this.setData({
-      buildings: buildings,
-      floors: floors,
-      units: units
+  getAllHouse() {
+    var that = this
+    qcloud.request({
+        // 要请求的地址
+        url: config.service.houseUrl,
+
+        data: {
+            act: 'getAllHouse',
+        },
+
+        // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+        login: true,
+
+        success(result) {
+            console.log('request success', result.data.data);
+            let resultData = result.data.data
+            resultData.unshift({ "id": 0, "house_name": "请选择" })
+            let houseIndex
+            resultData.forEach(function (houseItem, idx) {
+                if (houseItem.id == that.data.houseId) {
+                    houseIndex = idx
+                }
+            })
+            that.setData({
+                allHouse: resultData,
+                houseIndex: houseIndex
+            })
+        },
+
+        fail(error) {
+            console.log('request fail', error);
+        },
+
+        complete() {
+            console.log('request complete');
+        }
+   })
+  },
+  
+  initHouseInfo(house_id) {
+    var that = this
+    qcloud.request({
+        // 要请求的地址
+        url: config.service.houseUrl,
+
+        data: {
+            act: 'getHouseInfo',
+            house_id: house_id
+        },
+
+        // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+        login: true,
+
+        success(result) {
+            console.log('request success', result.data.data);
+            let resultData = result.data.data
+            let houseConfig = resultData.houseRow.house_config
+            houseConfig.buildings.unshift("?栋")
+            houseConfig.floors.unshift("?层")
+            houseConfig.units.unshift("?单元")
+            that.setData({
+                buildings: houseConfig.buildings,
+                floors: houseConfig.floors,
+                units: houseConfig.units,
+                houseId: resultData.houseRow.id,
+                houseName: resultData.houseRow.house_name
+            })
+            that.getAllHouse()
+        },
+
+        fail(error) {
+            console.log('request fail', error);
+        },
+
+        complete() {
+            console.log('request complete');
+        }
     })
   },
 
@@ -72,6 +135,7 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
         that.setData({
           inputData: inputData,
         })
+        that.initHouseInfo(resultData.house_id)
         console.log('request success', result);
 
       },
@@ -89,6 +153,7 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
 
   setCustomerInfo (field, value) {
     let that = this
+
     this.setData({
       pending: true
     });
@@ -122,6 +187,19 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
         console.log('request complete');
       }
     })
+  },
+
+  bindHouseChange(e) {
+      console.log(e)
+      let houseIndex = Number(e.detail.value)
+      if (houseIndex > 0) {
+          let houseId = this.data.allHouse[houseIndex].id
+          this.setData({
+              houseId: houseId,
+              houseIndex: houseIndex
+          });
+          this.setCustomerInfo('house_id', houseId)
+      }
   },
 
   bindMultiPickerChange(e) {

@@ -18,6 +18,19 @@
     </view>
       </view>
         <view class="zan-panel">
+    <view class="zan-cell zan-field">
+        <view class="zan-cell__hd zan-field__title">所在小区</view>
+       <picker
+         mode="selector"
+         class="zan-field__input zan-cell__bd"
+         range="{{ allHouse }}"
+         range-key="house_name"
+         value="{{ houseIndex }}"
+         bindchange="bindHouseChange"
+       >
+         {{ allHouse[houseIndex].house_name }}
+       </picker>
+     </view>
     <template is="zan-field" data="{{ title: '称呼', type: 'input', placeholder: '联系用的称呼', maxlength:10, componentId:'real_name', value:inputData.real_name }}"></template>
     <template is="zan-field" data="{{ title: '联系电话', type: 'input', inputType: 'number', placeholder: '请输入手机号', error: true, maxlength:11, componentId:'phone', value:inputData.phone   }}"></template>
     <view class="zan-cell zan-field">

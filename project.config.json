@@ -6,6 +6,7 @@
 	"setting": {
 		"newFeature": true
 	},
+	"libVersion": "1.9.9",
 	"condition": {
 		"search": {
 			"current": -1,

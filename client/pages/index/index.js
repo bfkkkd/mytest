@@ -96,6 +96,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           joinedCount: reJoinedCount,
           memberCount: memberCount,
           loading: false,
+          loadingMore: false,
           lastId: activityIds[activityIds.length-1],
           hasMore: activityIds.length < 20 ? false : true
         });
@@ -108,14 +109,12 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       fail(error) {
         that.setData({
           loading: false,
+          loadingMore: false,
         });
         console.log('request fail', error);
       },
 
       complete() {
-        that.setData({
-          loading: false,
-        });
         console.log('request complete');
       }
     })
@@ -262,12 +261,10 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
     if (this.data.loading || !this.data.hasMore) return
     this.setData({
+      loading:true,
       loadingMore: true
     });
     this.getActivity()
-    this.setData({
-      loadingMore: false
-    });
     console.log('to bottom');
   },
   onShareAppMessage() {

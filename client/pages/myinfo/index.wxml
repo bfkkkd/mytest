@@ -7,6 +7,7 @@
   <view class="doc-title">
     <view class="zan-cell__icon zan-icon zan-icon-setting" style="font-size: 60rpx; color: cornflowerblue"></view>设置
   </view>
+   <custom_info>自定义组件</custom_info>
   <view class="zan-panel-title">
     个人信息
     <view wx:if="{{pending === true}}" class="zan-cell__icon zan-icon zan-icon-edit-data" style="font-size: 25rpx; color:red">...</view>

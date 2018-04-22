@@ -98,7 +98,6 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
                 houseId: resultData.houseRow.id,
                 houseName: resultData.houseRow.house_name
             })
-            that.getAllHouse()
         },
 
         fail(error) {
@@ -134,8 +133,10 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
         Object.assign(inputData,result.data.data)
         that.setData({
           inputData: inputData,
+          houseId: resultData.house_id,
         })
         that.initHouseInfo(resultData.house_id)
+        that.getAllHouse()
         console.log('request success', result);
 
       },
@@ -192,7 +193,7 @@ Page(Object.assign({}, Field, Zan.TopTips, Zan.Toast, Zan.Switch, {
   bindHouseChange(e) {
       console.log(e)
       let houseIndex = Number(e.detail.value)
-      if (houseIndex > 0) {
+      if (houseIndex > 0 && this.data.houseIndex != houseIndex) {
           let houseId = this.data.allHouse[houseIndex].id
           this.setData({
               houseId: houseId,

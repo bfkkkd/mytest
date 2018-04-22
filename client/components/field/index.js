@@ -28,7 +28,9 @@ Component({
     picker_range_value: Number,
     show_value: String,
     right: Boolean,
-    error: Boolean
+    error: Boolean,
+    maxlength: Number,
+    componentId: String
   },
 
   methods: {
@@ -47,6 +49,11 @@ Component({
       console.info('[zan:field:blur]', event);
   
       this.triggerEvent('blur', event);
-    }
+    },
+
+    bindPickerChange(event) {
+      console.info('[zan:picker:change]', event);
+      this.triggerEvent('change', event);
+    },
   }
 })

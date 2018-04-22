@@ -42,5 +42,7 @@
     bindinput="handleZanFieldChange"
     bindfocus="handleZanFieldFocus"
     bindblur="handleZanFieldBlur"
+    maxlength="{{maxlength || 200 }}"
+    data-component-id="{{ componentId }}
   />
 </view>

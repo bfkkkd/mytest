@@ -39,6 +39,6 @@ Component({
       console.info('[zan:field:blur]', event);
   
       this.triggerEvent('blur', event);
-    }
+    },
   }
 })

@@ -7,18 +7,37 @@
       picker_range_key='house_name' 
       picker_range_value='{{ houseIndex }}' 
       show_value='{{allHouse[houseIndex].house_name}}'
+      bind:change="bindHouseChange"
 >
 </zan-field>
 <zan-field 
       title="称呼"
       type="input"
       placeholder="联系用的称呼"
+      componentId='real_name'
+      value='{{inputData.real_name}}'
+      bind:blur='handleZanFieldChange'
 >
 </zan-field>
 <zan-field 
       title="联系电话"
       type="input"
+      inputType="number"
       placeholder="联系用的电话"
+      componentId='phone'
+      value='{{inputData.phone}}'
+      maxlength='11'
+      bind:blur='handleZanFieldChange'
+>
+</zan-field>
+<zan-field 
+      title="楼栋号" 
+      type="picker" 
+      picker_mode='multiSelector' 
+      picker_ranges='{{[buildings,floors,units]}}' 
+      picker_range_value='{{[inputData.buildingIndex,inputData.floorIndex,inputData.unitIndex]}}' 
+      show_value='{{ buildings[inputData.buildingIndex] }} {{ floors[inputData.floorIndex] }} {{ units[inputData.unitIndex] }}'
+      bind:change="bindMultiPickerChange"
 >
 </zan-field>
 </zan-panel>

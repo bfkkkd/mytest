@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "zan-field": "/components/field/index",
+    "zan-panel": "/components/zan/panel/index"
+  }
+}

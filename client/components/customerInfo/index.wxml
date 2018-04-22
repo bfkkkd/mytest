@@ -1,0 +1,24 @@
+<zan-panel>
+<zan-field 
+      title="所在小区" 
+      type="picker" 
+      picker_mode='selector' 
+      picker_ranges='{{ allHouse }}' 
+      picker_range_key='house_name' 
+      picker_range_value='{{ houseIndex }}' 
+      show_value='{{allHouse[houseIndex].house_name}}'
+>
+</zan-field>
+<zan-field 
+      title="称呼"
+      type="input"
+      placeholder="联系用的称呼"
+>
+</zan-field>
+<zan-field 
+      title="联系电话"
+      type="input"
+      placeholder="联系用的电话"
+>
+</zan-field>
+</zan-panel>

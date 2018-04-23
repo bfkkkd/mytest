@@ -17,6 +17,7 @@
       componentId='real_name'
       value='{{inputData.real_name}}'
       bind:blur='handleZanFieldChange'
+      error='{{pending==="real_name" ? true : false}}'
 >
 </zan-field>
 <zan-field 
@@ -28,6 +29,7 @@
       value='{{inputData.phone}}'
       maxlength='11'
       bind:blur='handleZanFieldChange'
+      error='{{pending==="phone" ? true : false}}'
 >
 </zan-field>
 <zan-field 
@@ -38,6 +40,7 @@
       picker_range_value='{{[inputData.buildingIndex,inputData.floorIndex,inputData.unitIndex]}}' 
       show_value='{{ buildings[inputData.buildingIndex] }} {{ floors[inputData.floorIndex] }} {{ units[inputData.unitIndex] }}'
       bind:change="bindMultiPickerChange"
+      error='{{pending==="address" ? true : false}}'
 >
 </zan-field>
 </zan-panel>

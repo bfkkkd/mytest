@@ -17,7 +17,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     loadingMore : false,
     loading: false,
     hasMore: true,
-    showPopup: false
+    showPopup: false,
+    showBottomPopup: false
   },
 
   initData() {
@@ -289,6 +290,11 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     this.setData({
       showPopup: !this.data.showPopup
     });
+  },
+  toggleBottomPopup() {
+      this.setData({
+          showBottomPopup: !this.data.showBottomPopup
+      });
   },
 
 }))

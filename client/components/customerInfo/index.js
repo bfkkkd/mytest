@@ -20,6 +20,7 @@ Component({
       floorIndex: 0,
       unitIndex: 0,
     },
+    pending: '',
     buildings: [],
     floors: [],
     units: [],
@@ -160,7 +161,7 @@ Component({
       let that = this
 
       this.setData({
-        pending: true
+          pending: field
       });
       qcloud.request({
         // 要请求的地址
@@ -178,7 +179,7 @@ Component({
 
         success(result) {
           that.setData({
-            pending: false
+            pending: ''
           });
           console.log('request success', result);
 

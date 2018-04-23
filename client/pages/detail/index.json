@@ -1,4 +1,9 @@
 {
   "navigationBarTitleText": "服务详情",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "custom_info": "/components/customerInfo/index",
+    "zan-popup": "/components/zan/popup/index",
+    "zan-button": "/components/zan/btn/index"
+  }
 }

@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "我的资料",
   "usingComponents": {
-    "custom_info": "/components/customerInfo/index"
+    "custom_info": "/components/customerInfo/index",
+    "zan-popup": "/components/zan/popup/index",
+    "zan-button": "/components/zan/btn/index"
   }
 }

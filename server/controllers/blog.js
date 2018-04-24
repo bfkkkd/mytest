@@ -13,10 +13,11 @@ async function get(ctx, next) {
   const open_id = ctx.state.$wxInfo.userinfo.openId
   ctx.state.code = '0'
   if (act == 'getActivity') {
-    var { start, type_id } = ctx.query
+    var { start, type_id, house_id } = ctx.query
     start = Number(start)
     type_id = Number(type_id)
-    let activityRows = await activityObject.getActivitis(type_id, start)
+    house_id = Number(house_id) || 1
+    let activityRows = await activityObject.getActivitis(house_id,type_id, start)
     let activityIdArray = []
     let memberCount = {}
     let joinedCount = {}

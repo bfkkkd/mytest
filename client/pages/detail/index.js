@@ -18,7 +18,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     loading: false,
     hasMore: true,
     showPopup: false,
-    showBottomPopup: false
+    showBottomPopup: false,
+    customInfoLoad: false
   },
 
   initData() {
@@ -126,6 +127,11 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         let act = result.data.data.act
         let user_info = {}
         if (act == 'join') {
+          //弹出用户信息
+          let tmpUserInfo = result.data.data.user_info
+          if (!tmpUserInfo.building || !tmpUserInfo.floor || !tmpUserInfo.house_id || !tmpUserInfo.phone || !tmpUserInfo.real_name || !tmpUserInfo.unit) {
+            that.togglePopup()
+          }
           wx.getUserInfo({
             success: res => {
               let exist = false
@@ -243,7 +249,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   },
 
   onShareAppMessage() {
-    let title = `🔴${this.data.userInfo.nickName}推荐你参加活动：${this.data.item.title}`;
+    let title = `🔴${this.data.userInfo.nickName}邀请您参加社区活动：${this.data.item.title}`;
     return {
       title: title,
     }
@@ -288,13 +294,9 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   togglePopup() {
     this.setData({
-      showPopup: !this.data.showPopup
+        showPopup: !this.data.showPopup,
+        customInfoLoad: true
     });
-  },
-  toggleBottomPopup() {
-      this.setData({
-          showBottomPopup: !this.data.showBottomPopup
-      });
   },
 
 }))

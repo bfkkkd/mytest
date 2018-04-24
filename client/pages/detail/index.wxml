@@ -91,7 +91,7 @@
 <view class="popup-example--bottom zan-popup zan-popup--bottom {{ showPopup ? 'zan-popup--show' : ''}}">
 <view class="zan-popup__mask" style='background:0' catchtap="togglePopup"></view>
     <view class="zan-popup__container">
-    <custom_info>用户资料组件</custom_info>
+    <custom_info houseId='{{item.house_id}}' loadData='{{customInfoLoad}}'>用户资料组件</custom_info>
       <view class="zan-btns grid">
         <view class='grid-cell' style='text-align: center;'>
         <button class="zan-btn zan-btn zan-btn--small" bindtap='goNew'>

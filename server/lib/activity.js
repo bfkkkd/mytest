@@ -1,10 +1,11 @@
 const { mysql } = require('../qcloud')
 
-async function getActivitis(type_id = 1, start = 0) {
+async function getActivitis(house_id=1, type_id = 1, start = 0) {
   return mysql('activity')
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
     .select('activity.id', 'activity.title', 'activity.open_id', 'cSessionInfo.user_info')
     .where('activity.type_id', type_id)
+    .andWhere('activity.house_id', house_id)
     .andWhere('activity.id', '<', start)
     .orderBy('activity.id', 'desc')
     .limit(20)
@@ -24,7 +25,7 @@ async function getActivityDetail(activityId) {
   return mysql('activity')
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
     .join('activityType', 'activityType.id', 'activity.type_id')
-    .select('activity.id', 'activity.title', 'activity.description', 'activity.img_urls', 'activity.start_time', 'activity.end_time', 'activity.only_verified', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name')
+      .select('activity.id', 'activity.house_id', 'activity.title', 'activity.description', 'activity.img_urls', 'activity.start_time', 'activity.end_time', 'activity.only_verified', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name')
     .where('activity.id', activityId)
     .first()
 }

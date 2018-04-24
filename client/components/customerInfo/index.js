@@ -2,6 +2,7 @@
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var Field = require('../../common/field/index');
 var Zan = require('../../dist/index');
+var cache = require('../../vendor/utils/cache.js');
 
 // 引入配置
 var config = require('../../config');
@@ -11,6 +12,15 @@ Component({
     houseId: {
       type: Number,
       value: 1
+    },
+    loadData: {
+        type: Boolean,
+        value: false,
+        observer: function (newVal, oldVal) { 
+            if (newVal != oldVal && newVal==true){
+                this.initCustomerInfo()
+            }
+        }
     },
   },
 
@@ -24,14 +34,14 @@ Component({
     buildings: [],
     floors: [],
     units: [],
-    houseId: 0,
+    myHouseId: 0,
     houseName: '',
     allHouse: [],
     houseIndex: 0,
   },
 
   ready: function () { 
-    this.initCustomerInfo()
+    
   },
 
   methods: {
@@ -54,7 +64,7 @@ Component({
           resultData.unshift({ "id": 0, "house_name": "请选择" })
           let houseIndex
           resultData.forEach(function (houseItem, idx) {
-            if (houseItem.id == that.data.houseId) {
+            if (houseItem.id == that.data.myHouseId) {
               houseIndex = idx
             }
           })
@@ -100,7 +110,7 @@ Component({
             buildings: houseConfig.buildings,
             floors: houseConfig.floors,
             units: houseConfig.units,
-            houseId: resultData.houseRow.id,
+            myHouseId: resultData.houseRow.id,
             houseName: resultData.houseRow.house_name
           })
         },
@@ -136,9 +146,13 @@ Component({
           resultData['unitIndex'] = resultData['unit']
 
           Object.assign(inputData, result.data.data)
+          if (!resultData.house_id && that.data.houseId) {
+              resultData.house_id = that.data.houseId
+              that.setCustomerInfo('house_id', resultData.house_id)
+          }
           that.setData({
             inputData: inputData,
-            houseId: resultData.house_id,
+            myHouseId: resultData.house_id,
           })
           that.initHouseInfo(resultData.house_id)
           that.getAllHouse()
@@ -201,10 +215,11 @@ Component({
       if (houseIndex > 0 && this.data.houseIndex != houseIndex) {
         let houseId = this.data.allHouse[houseIndex].id
         this.setData({
-          houseId: houseId,
+          myHouseId: houseId,
           houseIndex: houseIndex
         });
         this.setCustomerInfo('house_id', houseId)
+        this.initHouseInfo(houseId)
       }
     },
 

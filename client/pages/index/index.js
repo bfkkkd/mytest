@@ -23,7 +23,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       selectedId: 0,
       scroll: false,
     },
-    type_id :0
+    type_id :0,
+    house_id: 0
   },
 
   getActivityMembers: function (ids) {
@@ -66,7 +67,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       data: {
         act: 'getActivity',
         type_id: this.data.type_id,
-        start: start
+        start: start,
+        house_id: this.data.house_id
       },
 
       // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
@@ -169,8 +171,10 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     })
   },
 
-  onLoad () {
+  onLoad (option) {
     let that = this
+    let house_id = Number(option.house_id) || 0
+    this.setData({ house_id: house_id })
     wx.getUserInfo({
       success: function (res) {
         that.setData({ userInfo: res.userInfo });
@@ -268,7 +272,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     console.log('to bottom');
   },
   onShareAppMessage() {
-    let title = `🔴${this.data.userInfo.nickName}给您发来了一个丰富社区助手`;
+    let title = `🔴${this.data.userInfo.nickName}发现了一个社区神器`;
     return {
       title: title,
     }

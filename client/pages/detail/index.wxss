@@ -58,6 +58,7 @@
 .popup-example--bottom .zan-popup__container {
   left: 0;
   right: 0;
+  background:#F9F9F9;
 }
 
 .share-button {

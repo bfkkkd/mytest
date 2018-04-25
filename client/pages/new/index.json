@@ -1,3 +1,8 @@
 {
-  "navigationBarTitleText": "我要提供服务"
+  "navigationBarTitleText": "我要发起",
+  "usingComponents": {
+    "custom_info": "/components/customerInfo/index",
+    "zan-popup": "/components/zan/popup/index",
+    "zan-button": "/components/zan/btn/index"
+ }
 }

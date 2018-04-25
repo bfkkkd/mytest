@@ -6,7 +6,7 @@
 
 <form bindsubmit="formSubmit">
   <view class="container" wx:if="{{step == 1}}">
-    <view class="zan-panel-title">类目是？</view>
+    <view class="zan-panel-title">主题类别是？</view>
     <view class="zan-panel">
       <view class="zan-btns">
         <button class="zan-btn zan-btn--primary" bindtap="onTypeChange" wx:for="{{types}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}" wx:key="idx"> {{ item.name }}</button>
@@ -138,4 +138,19 @@
     </view>
   </view>
 </form>
+<zan-popup
+    show="{{ showBottomPopup }}"
+    type="bottom"
+    bindclose="toggleBottomPopup"
+  >
+    <view class="pop-example__container pop-example__container--bottom">
+    <view class="zan-panel-title" style="color:red">未设置小区，请先完善个人信息</view>
+     <custom_info loadData='{{loadInfo}}'>用户资料组件</custom_info>
+      <view class="zan-btns">
+        <button class="zan-btn" catchtap="toggleBottomPopup">
+          关闭窗口
+        </button>
+      </view>
+    </view>
+</zan-popup>
 <template is="zan-toast" data="{{ zanToast }}"></template>

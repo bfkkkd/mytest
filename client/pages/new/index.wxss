@@ -23,3 +23,12 @@
   width: 100%;
   z-index: 100;
 }  
+
+.pop-example__container {
+  overflow: hidden;
+  background: #fff;
+}
+
+.pop-example__container--bottom {
+  width: 100vw;
+}

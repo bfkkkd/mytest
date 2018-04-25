@@ -1,5 +1,5 @@
 // 引入 QCloud 小程序增强 SDK
-var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var api = require('../../vendor/utils/api.js');
 var util = require('../../vendor/utils/util.js');
 var Zan = require('../../dist/index');
 import typeConfig from './typeConfig';
@@ -19,7 +19,10 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
 	uploadUrl: config.service.uploadUrl, 
     typeConfig: typeConfig,
     step: 1,
-    customDate: false,  
+    customDate: false,
+    showBottomPopup: false,
+    loadInfo: false,
+    loading: false,
   },
 
   onLoad(option) {
@@ -54,27 +57,35 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
 
   getActivityTypes() {
     var that = this
-    qcloud.request({
-      // 要请求的地址
-      url: config.service.blogUrl,
+    api.baseAction('getActivityTypes',{
+        login: true,
+        success: function (result) {
+            let inputData = that.data.inputData
+            inputData.type_id = result.data.data[0].id
+            that.setData({
+                types: result.data.data
+            });
+        }
+    });
+  },
 
-      data: {
-        act: 'getActivityTypes'
-      },
+  checkHouseInfo(param) {
+      var that = this
+      api.baseAction('getCustomerInfo', {
+          // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+          login: true,
 
-      // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
-      login: true,
+          success(result) {
+              let resultData = result.data.data
+              if (!resultData.house_id) {
+                  that.toggleBottomPopup()
+              }
+              param.success && param.success(resultData.house_id)
+              console.log('request success', result);
 
-      success(result) {
-        let inputData = that.data.inputData
-        inputData.type_id = result.data.data[0].id
-        that.setData({
-          types: result.data.data
-        });
+          },
+      })
 
-        console.log('request success', result);
-      }
-    })
   },
 
   onTypeChange(e) {
@@ -83,10 +94,33 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     inputData.type_idx = e.currentTarget.dataset.idx
     inputData.type_id = this.data.types[e.currentTarget.dataset.idx].id || 0
 
-    this.setData({
-      inputData: inputData,
-      step : 2
-    });
+    wx.showLoading({
+        title: '请稍候',
+        mask: true
+    })
+
+    if (!inputData.house_id) {
+        var that = this
+        this.checkHouseInfo({
+            success: function (houseId) {
+                if (houseId) {
+                    inputData.house_id = houseId
+                    that.setData({
+                        inputData: inputData,
+                        step: 2,
+                    });
+                }
+                wx.hideLoading()
+            },
+        })
+    } else {
+        this.setData({
+            inputData: inputData,
+            step: 2,
+        });
+        wx.hideLoading()
+    }
+    
   },
 
   prevStep() {
@@ -160,6 +194,9 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
     } else if (inputData.type_id < 1) {
       this.showTopTips("请选择服务类别！❤️");
       return flag = false;
+    } else if (inputData.house_id < 1) {
+        this.showTopTips("未选择小区，请刷新重试！❤️");
+        return flag = false;
     }
     return flag;
   },
@@ -191,19 +228,17 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
       title: '提交中...',
       mask: true
     })
-    qcloud.request({
-      // 要请求的地址
-      url: config.service.blogUrl,
+    api.baseAction('save', {
       method : 'POST',
 
       data: {
-        act: 'save',
         title: data.title,
         type_id: data.type_id,
         only_verified: data.only_verified,
         date: data.date + ' ' + data.time,
         description : data.description,
         img_urls: data.img_urls,
+        house_id: data.house_id
       },
 
       login: true,
@@ -212,8 +247,8 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
         that.setBtnLoading(that)
         wx.hideLoading();
         if (result.data.code == '0' && result.data.data.activity_id) {
-          that.initdefault()
           that.showZanToast('提交成功！');
+          that.initdefault()
           wx.navigateTo({ url: '../detail/index?id=' + result.data.data.activity_id });
         } else {
           that.showTopTips(result.data.data)
@@ -283,6 +318,13 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
       current: that.data.inputData.img_urls[id],
       urls: that.data.inputData.img_urls
     })
+  },
+
+  toggleBottomPopup() {
+      this.setData({
+          showBottomPopup: !this.data.showBottomPopup,
+          loadInfo : true,
+      });
   },
 
 }))

@@ -25,6 +25,7 @@
     range="{{ picker_ranges }}"
     range-key="{{ picker_range_key || '' }}"
     value="{{ picker_range_value || 0 }}"
+    disabled="{{ disabled }}"
     bindchange="bindPickerChange"
   >
     {{ show_value }}

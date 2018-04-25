@@ -7,6 +7,7 @@
       picker_range_key='house_name' 
       picker_range_value='{{ houseIndex }}' 
       show_value='{{allHouse[houseIndex].house_name}}'
+      disabled='{{houseId ? true : false}}'
       bind:change="bindHouseChange"
 >
 </zan-field>

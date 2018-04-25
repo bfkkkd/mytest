@@ -249,7 +249,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   },
 
   onShareAppMessage() {
-    let title = `🔴${this.data.userInfo.nickName}邀请您参加社区活动：${this.data.item.title}`;
+    let title = `🔴${this.data.userInfo.nickName}参与了小区活动：${this.data.item.title}`;
     return {
       title: title,
     }

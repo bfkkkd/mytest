@@ -16,7 +16,7 @@
       <view class="zan-cell__icon zan-icon zan-icon-question" style="color: cornflowerblue" bindtap="showToast" data-content="请与在线客服进行验证！"></view>
     </view>
   </view>
-  <custom_info>用户资料组件</custom_info>
+  <custom_info loadData='true'>用户资料组件</custom_info>
 
   <view class="zan-panel-title">系统设置</view>
   <view class="zan-panel">

@@ -1,8 +1,8 @@
 // pages/myinfo/index.js
-var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var api = require('../../vendor/utils/api.js');
 var Field = require('../../common/field/index');
 var Zan = require('../../dist/index');
-var cache = require('../../vendor/utils/cache.js');
+var storage = require('../../vendor/utils/storage.js');
 
 // 引入配置
 var config = require('../../config');
@@ -11,7 +11,7 @@ Component({
   properties: {
     houseId: {
       type: Number,
-      value: 1
+      value: 0
     },
     loadData: {
         type: Boolean,
@@ -47,17 +47,8 @@ Component({
   methods: {
     getAllHouse() {
       var that = this
-      qcloud.request({
-        // 要请求的地址
-        url: config.service.houseUrl,
-
-        data: {
-          act: 'getAllHouse',
-        },
-
-        // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
+      api.houseAction('getAllHouse', {
         login: true,
-
         success(result) {
           console.log('request success2', result.data.data);
           let resultData = result.data.data
@@ -74,29 +65,15 @@ Component({
           })
           console.log(that.data)
         },
-
-        fail(error) {
-          console.log('request fail', error);
-        },
-
-        complete() {
-          console.log('request complete');
-        }
       })
     },
 
     initHouseInfo(house_id) {
       var that = this
-      qcloud.request({
-        // 要请求的地址
-        url: config.service.houseUrl,
-
+      api.houseAction('getHouseInfo', {
         data: {
-          act: 'getHouseInfo',
           house_id: house_id
         },
-
-        // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
         login: true,
 
         success(result) {
@@ -114,26 +91,12 @@ Component({
             houseName: resultData.houseRow.house_name
           })
         },
-
-        fail(error) {
-          console.log('request fail', error);
-        },
-
-        complete() {
-          console.log('request complete');
-        }
       })
     },
 
     initCustomerInfo() {
       var that = this
-      qcloud.request({
-        // 要请求的地址
-        url: config.service.blogUrl,
-
-        data: {
-          act: 'getCustomerInfo',
-        },
+      api.baseAction('getCustomerInfo',{
 
         // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
         login: true,
@@ -159,14 +122,6 @@ Component({
           console.log('request success', result);
 
         },
-
-        fail(error) {
-          console.log('request fail', error);
-        },
-
-        complete() {
-          console.log('request complete');
-        }
       })
 
     },
@@ -177,35 +132,26 @@ Component({
       this.setData({
           pending: field
       });
-      qcloud.request({
-        // 要请求的地址
-        url: config.service.blogUrl,
-        method: 'POST',
 
+      api.baseAction('setCustomerInfo', {
+        method: 'POST',
         data: {
-          act: 'setCustomerInfo',
           field: field,
           value: value
         },
-
         // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
         login: true,
-
         success(result) {
           that.setData({
             pending: ''
           });
           console.log('request success', result);
 
-        },
+          if (field == 'house_id') {
+              storage.setSync('house_id', value);
+          }
 
-        fail(error) {
-          console.log('request fail', error);
         },
-
-        complete() {
-          console.log('request complete');
-        }
       })
     },
 

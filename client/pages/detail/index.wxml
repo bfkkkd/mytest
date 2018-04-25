@@ -7,7 +7,7 @@
   {{item.title}}
   </view>
   <view class="title_right zan-font-12 zan-c-gray-darker">
-  {{item.end_time}} 截止，By {{item.user_info.nickName}} <image class="userinfo-avatar" style='height:45rpx;width:45rpx' src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
+  {{item.end_time}} 截止，By 『{{item.house_name}}』{{item.user_info.nickName}} <image class="userinfo-avatar" style='height:45rpx;width:45rpx' src="{{item.user_info.avatarUrl || '/images/youke.png'}}" background-size="cover"></image>
   </view>
   <view class="zan-panel" wx:if="{{ item.img_urls[0] }}">
       <view class="zan-cell zan-field">
@@ -49,9 +49,6 @@
         <view>
         {{member.add_time}}
         </view>
-        <view wx:if="{{item.my_open_id==member.open_id}}" class="zan-font-12 zan-c-red" style='padding-top: 20rpx' bindtap="goMine">
-        完善个人信息>
-        </view>
         </view>
         </view>
         <view class='zan-font-12' style='height:40rpx'>
@@ -91,24 +88,25 @@
 <view class="popup-example--bottom zan-popup zan-popup--bottom {{ showPopup ? 'zan-popup--show' : ''}}">
 <view class="zan-popup__mask" style='background:0' catchtap="togglePopup"></view>
     <view class="zan-popup__container">
+     <view class="zan-panel-title" style="color:red">完善资料</view>
     <custom_info houseId='{{item.house_id}}' loadData='{{customInfoLoad}}'>用户资料组件</custom_info>
       <view class="zan-btns grid">
         <view class='grid-cell' style='text-align: center;'>
         <button class="zan-btn zan-btn zan-btn--small" bindtap='goNew'>
           <view class="zan-icon zan-icon-add-o" style="color:red"></view>
-          我要发布
+          我要发起
         </button>
         </view>
         <view class='grid-cell' style='text-align: center;'>
           <button open-type="share" class="zan-btn zan-btn--small">
             <view class="zan-icon zan-icon-upgrade" style="color:red"></view>
-            我要分享
+            通知群友
           </button>
         </view>
         <view class='grid-cell' style='text-align: center;'>
           <button form-type="submit" wx:if="{{item.joined}}" data-id="{{item.id}}" data-type="del" class="zan-btn zan-btn--small">
             <view class="zan-icon zan-icon-delete" style="color:darkgrey"></view>
-            退出活动
+            取消参与
           </button>
         </view>
       </view>

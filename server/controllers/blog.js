@@ -95,6 +95,19 @@ async function get(ctx, next) {
 
       let activityItem = await activityObject.getActivityDetail(activity_id)
       let memberItem = await memberObject.getCustomerInfo(open_id)
+          .then(res => {
+              if (!res) {
+                  return memberObject.newCustomerInfo(ctx.state.$wxInfo.userinfo)
+              } else {
+                  return res
+              }
+          }).then(res => {
+              if (res) {
+                  return memberObject.getCustomerInfo(open_id)
+              } else {
+                  return false
+              }
+          })
       let autohrItem = await memberObject.getCustomerInfo(activityItem.open_id)
 
       let returnData = {
@@ -198,7 +211,7 @@ async function get(ctx, next) {
     let customerInfo = await memberObject.getCustomerInfo(open_id)
     .then(res =>{
       if (!res) {
-        return memberObject.newCustomerInfo(ctx.state.$wxInfo.userinfo)
+          return memberObject.newCustomerInfo(ctx.state.$wxInfo.userinfo)
       } else {
         return res
       }
@@ -233,14 +246,14 @@ async function post(ctx, next) {
   let activity_id = 0
   ctx.state.code = '0'
   if (act == 'save') {
-    var { title, type_id, only_verified, date, description, img_urls } = ctx.request.body
+    var { title, house_id, type_id, only_verified, date, description, img_urls } = ctx.request.body
     img_urls = JSON.stringify(img_urls)
     if (title.length > 30 || description.length > 300) {
       ctx.state.code = '-1'
       ctx.state.data = '标题或详细内容超出长度'
     } else {
       ctx.state.data = await mysql('activity').insert(
-        { title: title, type_id: type_id, only_verified: only_verified, description: description, end_time: date, open_id: open_id, img_urls: img_urls })
+          { title: title, house_id: house_id, type_id: type_id, only_verified: only_verified, description: description, end_time: date, open_id: open_id, img_urls: img_urls })
         .then(function (id) {
           activity_id = id[0]
           return mysql('activityMember').insert({

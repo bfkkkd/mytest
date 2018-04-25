@@ -1,6 +1,6 @@
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
-var cache = require('../../vendor/utils/cache.js');
+var storage = require('../../vendor/utils/storage.js');
 var Zan = require('../../dist/index');
 
 // 引入配置
@@ -124,7 +124,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   getActivityTypes() {
     var that = this
-    let types = cache.get('activity_types')
+    let types = storage.get('activity_types')
     if (types) {
       console.log(types)
       let type_id = this.data.type_id
@@ -159,7 +159,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           item.title = item.name
         })
 
-        cache.put('activity_types', types, 30)
+        storage.set('activity_types', types, 30)
 
         that.setData({
           types: types,
@@ -173,7 +173,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   onLoad (option) {
     let that = this
-    let house_id = Number(option.house_id) || 0
+    //let house_id = Number(option.house_id) || 0
+    let house_id = storage.get('house_id') || 0;
     this.setData({ house_id: house_id })
     wx.getUserInfo({
       success: function (res) {

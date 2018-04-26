@@ -2,7 +2,8 @@ const { mysql } = require('../qcloud')
 
 async function getCustomerInfo(open_id) {
   return mysql('customerInfo')
-    .select('real_name', 'house_id', 'phone', 'phone', 'building', 'floor', 'unit', 'verified', 'published')
+    .join('house', 'house.id', 'customerInfo.house_id')
+      .select('real_name', 'house_id', 'house_name', 'phone', 'phone', 'building', 'floor', 'unit', 'verified', 'published')
     .where('open_id', open_id).first()
 }
 

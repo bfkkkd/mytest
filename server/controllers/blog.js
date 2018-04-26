@@ -95,19 +95,7 @@ async function get(ctx, next) {
 
       let activityItem = await activityObject.getActivityDetail(activity_id)
       let memberItem = await memberObject.getCustomerInfo(open_id)
-          .then(res => {
-              if (!res) {
-                  return memberObject.newCustomerInfo(ctx.state.$wxInfo.userinfo)
-              } else {
-                  return res
-              }
-          }).then(res => {
-              if (res) {
-                  return memberObject.getCustomerInfo(open_id)
-              } else {
-                  return false
-              }
-          })
+      memberItem = memberItem || {}
       let autohrItem = await memberObject.getCustomerInfo(activityItem.open_id)
 
       let returnData = {

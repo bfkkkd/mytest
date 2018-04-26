@@ -148,7 +148,7 @@ Component({
           console.log('request success', result);
 
           if (field == 'house_id') {
-              storage.setSync('house_id', value);
+              storage.remove('house');
           }
 
         },

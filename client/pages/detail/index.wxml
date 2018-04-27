@@ -62,7 +62,13 @@
 
   <view style="height:150rpx;background: #F9F9F9" >
   </view>
-
+<zan-popup show="{{ showCenterPopup }}"  type="bottom" showOverlay="{{false}}" bind:click-overlay="toggleCenterPopup">
+        <zan-button type="primary" openType="share">
+        <view class="zan-icon zan-icon-certificate" style="font-size:50rpx"></view>
+        马上通知群友！
+        </zan-button>
+        <view style='height:180rpx'></view>
+    </zan-popup>
 </view>
 <form report-submit="true" bindsubmit="doActivity"> 
 <view class="bottom">
@@ -89,7 +95,7 @@
 <view class="zan-popup__mask" style='background:0' catchtap="togglePopup"></view>
     <view class="zan-popup__container">
      <view class="zan-panel-title" style="color:red">完善资料</view>
-    <custom_info houseId='{{item.house_id}}' loadData='{{customInfoLoad}}'>用户资料组件</custom_info>
+    <custom_info houseId='{{item.house_id}}' loadData='{{customInfoLoad}}' bind:finished="toggleCenterPopup">用户资料组件</custom_info>
       <view class="zan-btns grid">
         <view class='grid-cell' style='text-align: center;'>
         <button class="zan-btn zan-btn zan-btn--small" bindtap='goNew'>
@@ -114,4 +120,5 @@
     </view>
 </view>
 </form>
+
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>

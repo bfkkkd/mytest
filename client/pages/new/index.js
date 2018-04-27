@@ -192,7 +192,7 @@ Page(Object.assign({}, Zan.Field, Zan.TopTips, Zan.Toast, Zan.Switch,{
       this.showTopTips("标题不能为空！❤️");
       return flag = false;
     } else if (inputData.type_id < 1) {
-      this.showTopTips("请选择服务类别！❤️");
+      this.showTopTips("请选择组织类别！❤️");
       return flag = false;
     } else if (inputData.house_id < 1) {
         this.showTopTips("未选择小区，请刷新重试！❤️");

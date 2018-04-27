@@ -3,6 +3,7 @@ var api = require('../../vendor/utils/api.js');
 var Field = require('../../common/field/index');
 var Zan = require('../../dist/index');
 var storage = require('../../vendor/utils/storage.js');
+var house = require('../../vendor/utils/house.js');
 
 // 引入配置
 var config = require('../../config');
@@ -104,9 +105,9 @@ Component({
         success(result) {
           let inputData = that.data.inputData
           let resultData = result.data.data
-          resultData['buildingIndex'] = resultData['building']
-          resultData['floorIndex'] = resultData['floor']
-          resultData['unitIndex'] = resultData['unit']
+          resultData['buildingIndex'] = resultData['building'] || 0
+          resultData['floorIndex'] = resultData['floor'] || 0
+          resultData['unitIndex'] = resultData['unit'] || 0
 
           Object.assign(inputData, result.data.data)
           if (!resultData.house_id && that.data.houseId) {
@@ -142,13 +143,27 @@ Component({
         // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
         login: true,
         success(result) {
+          let inputData = that.data.inputData
+          if (field =='address') {
+              inputData['buildingIndex'] = inputData['building'] = value['building']
+              inputData['floorIndex'] = inputData['floor'] = value['building']
+              inputData['unitIndex'] = inputData['unit'] = value['building'] 
+          } else {
+              inputData[field] = value
+          }
           that.setData({
-            pending: ''
+            pending: '',
+            inputData: inputData
           });
           console.log('request success', result);
 
           if (field == 'house_id') {
               storage.remove('house');
+              house.getUserHouse()
+          }
+          
+          if (inputData.building && inputData.floor && inputData.house_id && inputData.phone && inputData.real_name && inputData.unit) {
+              that.finished()
           }
 
         },
@@ -221,5 +236,19 @@ Component({
       }
       return flag;
     },
+
+    showTopTips: function(title) {
+        wx.showToast({
+            title: title,
+            icon: 'none',
+            duration: 2000
+        })
+    },
+
+    finished: function () {
+        var myEventDetail = {} // detail对象，提供给事件监听函数
+        var myEventOption = {} // 触发事件的选项
+        this.triggerEvent('finished', myEventDetail, myEventOption)
+    }
   }
 });

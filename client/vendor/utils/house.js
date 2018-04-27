@@ -1,7 +1,7 @@
 var api = require('../../vendor/utils/api.js');
 var storage = require('../../vendor/utils/storage.js');
 
-function getUserHouse(opts) {
+function getUserHouse(opts = {}) {
     let houseData = storage.get('house') || {id:0,name:''}
 
     if (houseData.id) {

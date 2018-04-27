@@ -101,7 +101,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           memberCount: memberCount,
           loading: false,
           loadingMore: false,
-          lastId: activityIds[activityIds.length-1],
+          lastId: activityIds[activityIds.length-1] || 0,
           hasMore: activityIds.length < 20 ? false : true
         });
         console.log('request success', result);

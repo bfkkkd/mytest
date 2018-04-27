@@ -2,6 +2,7 @@
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var Zan = require('../../dist/index');
 var util  = require('../../vendor/utils/util.js');
+var storage = require('../../vendor/utils/storage.js')
 
 // 引入配置
 var config = require('../../config');
@@ -19,7 +20,10 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     hasMore: true,
     showPopup: false,
     showBottomPopup: false,
-    customInfoLoad: false
+    showCenterPopup: false,
+    hideToggle: false,
+    customInfoLoad: false,
+    houseData: {}
   },
 
   initData() {
@@ -36,7 +40,11 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     let that = this
     var activity_id = Number(option.id)
     if (activity_id < 1) return
-    that.setData({ activity_id: activity_id })
+    let houseData = storage.get('house') || {}
+    that.setData({ 
+        activity_id: activity_id,
+        houseData: houseData
+    })
     this.loadActivity(activity_id)
   },
 
@@ -95,6 +103,11 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     console.log(e)
     if (this.data.pending != 0) return
 
+    if (this.data.houseData.id && this.data.item.house_id != this.data.houseData.id) {
+        this.showTopTips('只允许本小区业主参与，请确认个人信息正确！')
+        return
+    }
+
     var that = this
     let formId = e.detail.formId
     let remark = e.detail.value.remark
@@ -131,6 +144,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           let tmpUserInfo = result.data.data.user_info
           if (!tmpUserInfo.building || !tmpUserInfo.floor || !tmpUserInfo.house_id || !tmpUserInfo.phone || !tmpUserInfo.real_name || !tmpUserInfo.unit) {
             that.togglePopup()
+          } else {
+              that.toggleCenterPopup()
           }
           wx.getUserInfo({
             success: res => {
@@ -292,11 +307,23 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     wx.navigateTo({ url: 'charts/index?id=' + this.data.item.id });
   },
 
-  togglePopup() {
+  togglePopup(e) {
     this.setData({
         showPopup: !this.data.showPopup,
-        customInfoLoad: true
+        customInfoLoad: true,
+        showCenterPopup: false,
+        hideToggle: e ? true : false
     });
+  },
+
+  toggleCenterPopup(e) {
+      if (!e || !this.data.hideToggle) {
+          this.setData({
+            showPopup: false,
+            showCenterPopup: !this.data.showCenterPopup,
+          });
+      }
+      
   },
 
 }))

@@ -10,6 +10,11 @@ Component({
       value: true
     },
 
+    showOverlay: {
+        type: Boolean,
+        value: true
+    },
+
     closeOnClickOverlay: {
       type: Boolean,
       value: true

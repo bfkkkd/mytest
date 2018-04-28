@@ -166,12 +166,14 @@ Component({
               that.finished()
           }
 
+          that.fieldFinished(field, value)
+
         },
       })
     },
 
     bindHouseChange(e) {
-      console.log("123",e)
+      console.log("house change",e)
       let houseIndex = Number(e.detail.detail.value)
       if (houseIndex > 0 && this.data.houseIndex != houseIndex) {
         let houseId = this.data.allHouse[houseIndex].id
@@ -249,6 +251,15 @@ Component({
         var myEventDetail = {} // detail对象，提供给事件监听函数
         var myEventOption = {} // 触发事件的选项
         this.triggerEvent('finished', myEventDetail, myEventOption)
+    },
+
+    fieldFinished: function(field, value) {
+        var myEventDetail = {
+            field : field,
+            value: value
+        } // detail对象，提供给事件监听函数
+        var myEventOption = {} // 触发事件的选项
+        this.triggerEvent('fieldFinished', myEventDetail, myEventOption)
     }
   }
 });

@@ -3,6 +3,7 @@ const activityObject = require('../lib/activity.js')
 const memberObject = require('../lib/member.js')
 const msgTemplate = require('../lib/msgTemplate.js')
 const moment = require('moment');
+const houseObject = require('../lib/house.js')
 
 
 /**
@@ -161,6 +162,8 @@ async function get(ctx, next) {
     var { activity_id } = ctx.query
     activity_id = Number(activity_id)
     let item = await activityObject.getActivityDetail(activity_id)
+    item.house_config = JSON.parse(item.house_config)
+
     item.memberCount = await activityObject.getActivityMemberCount(activity_id)
 
     item.members = await activityObject.getActivityMembers(activity_id, 20, moment().format().toString(), open_id)

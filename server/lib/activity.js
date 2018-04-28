@@ -26,7 +26,7 @@ async function getActivityDetail(activityId) {
     .join('cSessionInfo', 'cSessionInfo.open_id', 'activity.open_id')
     .join('activityType', 'activityType.id', 'activity.type_id')
     .join('house', 'activity.house_id', 'house.id')
-      .select('activity.id', 'activity.house_id', 'activity.title', 'activity.description', 'activity.img_urls', 'activity.start_time', 'activity.end_time', 'activity.only_verified', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name', 'house.house_name')
+      .select('activity.id', 'activity.house_id', 'activity.title', 'activity.description', 'activity.img_urls', 'activity.start_time', 'activity.end_time', 'activity.only_verified', 'activity.open_id', 'cSessionInfo.user_info', 'activityType.id AS type_id', 'activityType.name AS type_name', 'house.house_name', 'house.house_config')
     .where('activity.id', activityId)
     .first()
 }

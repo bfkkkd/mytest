@@ -71,7 +71,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
             result.data.data.end_time = util.formatDayAndTime(new Date(result.data.data.end_time))
             result.data.data.members.forEach(function (mitem, idx) {
               mitem.add_time = util.formatDayAndTime(new Date(mitem.add_time))
-              mitem.address = util.formatAddress(mitem.building, mitem.floor, mitem.unit)
+              mitem.address = util.formatAddress(mitem.building, mitem.floor, mitem.unit, result.data.data.house_config)
               if (mitem.open_id == result.data.data.my_open_id) {
                 result.data.data.memberIdx = idx
               }
@@ -164,7 +164,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
                   remark: remark, 
                   user_info: res.userInfo,  
                   add_time: util.formatDayAndTime(new Date()),
-                  address: util.formatAddress(tmpUserInfo.building, tmpUserInfo.floor, tmpUserInfo.unit)
+                  address: util.formatAddress(tmpUserInfo.building, tmpUserInfo.floor, tmpUserInfo.unit, item.house_config)
                 }, tmpUserInfo)
                 item.members.unshift(newMember)
                 item.memberIdx = 0
@@ -226,7 +226,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         result.data.data.forEach(function (item, index) {
           if (item) {
             item.add_time = util.formatDayAndTime(new Date(item.add_time))
-            item.address = util.formatAddress(item.building, item.floor, item.unit)
+            item.address = util.formatAddress(item.building, item.floor, item.unit, activityItem.house_config)
             activityItem.members.push(item)
           }
         })
@@ -324,6 +324,27 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           });
       }
       
+  },
+
+  fieldFinished(res) {
+      let field = res.detail.field
+      let value = res.detail.value
+      var item = this.data.item
+      if (item.memberIdx != -1) {
+          if (field == 'address') {
+              item.members[item.memberIdx]['address'] = util.formatAddress(value.building, value.floor, value.unit, item.house_config)
+              item.members[item.memberIdx]['building'] = value.building
+              item.members[item.memberIdx]['floor'] = value.floor
+              item.members[item.memberIdx]['unit'] = value.unit
+          } else {
+              item.members[item.memberIdx][field] = value
+          }
+          
+          this.setData({
+              item: item,
+          });
+      }
+
   },
 
 }))

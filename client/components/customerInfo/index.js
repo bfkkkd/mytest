@@ -146,8 +146,8 @@ Component({
           let inputData = that.data.inputData
           if (field =='address') {
               inputData['buildingIndex'] = inputData['building'] = value['building']
-              inputData['floorIndex'] = inputData['floor'] = value['building']
-              inputData['unitIndex'] = inputData['unit'] = value['building'] 
+              inputData['floorIndex'] = inputData['floor'] = value['floor']
+              inputData['unitIndex'] = inputData['unit'] = value['unit'] 
           } else {
               inputData[field] = value
           }

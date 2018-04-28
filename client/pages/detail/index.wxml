@@ -65,7 +65,7 @@
 <zan-popup show="{{ showCenterPopup }}"  type="bottom" showOverlay="{{false}}" bind:click-overlay="toggleCenterPopup">
         <zan-button type="primary" openType="share">
         <view class="zan-icon zan-icon-certificate" style="font-size:50rpx"></view>
-        马上通知群友！
+        点击通知群友！
         </zan-button>
         <view style='height:180rpx'></view>
     </zan-popup>

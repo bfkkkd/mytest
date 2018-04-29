@@ -36,8 +36,10 @@ function formatAddress(building, floor, unit, config) {
         config.floors.unshift("?层")
         config.units.unshift("?单元")
     } 
-    console.log(config)
-    return config.buildings[building].replace(/栋/, "-") + config.floors[floor].replace(/层/, "") + formatNumber(config.units[unit].replace(/单元/, ""))
+    let b = config.buildings[building] || config.buildings[0]
+    let f = config.floors[floor] || config.floors[0]
+    let u = config.units[unit] || config.units[0]
+    return b.replace(/栋/, "-") + f.replace(/层/, "") + formatNumber(u.replace(/单元/, ""))
   //return Number(building) + "-" + Number(floor) + formatNumber(Number(unit))
 }
 

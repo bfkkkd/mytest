@@ -4,6 +4,7 @@
   "usingComponents": {
     "custom_info": "/components/customerInfo/index",
     "zan-popup": "/components/zan/popup/index",
-    "zan-button": "/components/zan/btn/index"
+    "zan-button": "/components/zan/btn/index",
+    "zan-noticebar": "/components/zan/noticebar/index"
   }
 }

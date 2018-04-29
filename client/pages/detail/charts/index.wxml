@@ -3,7 +3,7 @@
   <view class="zan-panel">
     <view class="zan-cell zan-font-12" wx:for="{{buildingData}}" wx:key="building" wx:for-item="item" wx:for-index="idx" bindtap="openBuilding" data-building="{{item.building}}">
         <view class="zan-col zan-col-4">
-          {{item.building ? item.building+'座' : '未知'}}
+          {{activityData.house_config.buildings[item.building]}}
         </view>
         <view class="zan-col zan-col-16">
           <progress percent="{{item.count/192*100}}" active />

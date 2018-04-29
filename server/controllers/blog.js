@@ -219,12 +219,24 @@ async function get(ctx, next) {
   } else if (act == 'getActivityBuildingCount') {
     var { activity_id } = ctx.query
     activity_id = Number(activity_id)
-    ctx.state.data = await activityObject.getActivityBuildingCount(activity_id)
+    let activityRows = await activityObject.getActivityDetail(activity_id)
+    activityRows.house_config = JSON.parse(activityRows.house_config)
+    let buildingInfo = await activityObject.getActivityBuildingCount(activity_id)
+    ctx.state.data = {
+        'activityRows': activityRows,
+        'buildingInfo': buildingInfo,
+    }
   } else if (act == 'getActivityBuildingUnits') {
     var { activity_id, building } = ctx.query
     activity_id = Number(activity_id)
     building = Number(building)
-    ctx.state.data = await activityObject.getActivityBuildingUnits(activity_id, building)
+    let activityRows = await activityObject.getActivityDetail(activity_id)
+    activityRows.house_config = JSON.parse(activityRows.house_config)
+    let unitInfo = await activityObject.getActivityBuildingUnits(activity_id, building)
+    ctx.state.data = {
+        'activityRows': activityRows,
+        'unitInfo': unitInfo,
+    }
   } else {
     ctx.state.data = act
   }

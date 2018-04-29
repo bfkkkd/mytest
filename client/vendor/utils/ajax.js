@@ -105,6 +105,7 @@ function sendRequest(param) {
             }
         },
         fail: function(err) {
+            console.error(err)
             param.fail && param.fail(err);
         },
         complete: function(res) {

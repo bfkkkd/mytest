@@ -16,7 +16,8 @@ Page({
    */
   data: {
     activity_id: 0,
-    buildingData: []
+    buildingData: [],
+    activityData: []
   },
 
   /**
@@ -42,14 +43,22 @@ Page({
       success(result) {
         console.log(result)
         let buildingData = [{building: 0, count: 0}]
-        result.data.data.forEach(function (item, index) {
+        let buildingInfo = result.data.data.buildingInfo
+        let activityRows = result.data.data.activityRows
+
+        activityRows.house_config.buildings.unshift("?栋")
+        
+        buildingInfo.forEach(function (item, index) {
           if (!item.building) {
             buildingData[0].count += item.count
           } else {
             buildingData.push(item)
           }
         })
-        that.setData({ buildingData: buildingData });
+        that.setData({ 
+            buildingData: buildingData,
+            activityData: activityRows,
+        });
       }
     })
   },

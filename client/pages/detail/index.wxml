@@ -1,6 +1,6 @@
 <import src="/dist/toptips/index.wxml" />
 <import src="../../dist/loadmore/index.wxml" />
-
+<zan-noticebar wx:if="{{notice}}" bindtap="onPullDownRefresh" text="{{ notice }}" />
 <template wx:if="{{loading}}" is="zan-loadmore" data="{{loading: true}}" />
 <view class="container">
   <view class="doc-title" style='min-height:50rpx'>

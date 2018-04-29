@@ -27,6 +27,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     type_id :0,
     house_id: 0,
     house_name: '',
+    notice: "",
   },
 
   getActivityMembers: function (ids) {
@@ -173,23 +174,44 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     })
   },
 
+  onHide () {
+      this.setData({
+          loading: false,
+      })
+  },
+
   onLoad (option) {
     let that = this
     //let house_id = Number(option.house_id) || 0
     wx.getUserInfo({
       success: function (res) {
         that.setData({ userInfo: res.userInfo });
+        that.ininData()
+        house.getUserHouse({
+            success: function (houseData) {
+                that.setData({
+                    house_id: houseData.id || 0,
+                    house_name: houseData.name || ''
+                });
+                that.getActivityTypes()
+            }
+        })
+        setTimeout(function () {
+            if (that.data.loading == true) {
+                that.setData({
+                    loading: false,
+                    notice: "网络异常，请点击重试！"
+                })
+            }
+        }, 10000)
+      },
+      fail (err) {
+          wx.openSetting()
+          that.setData({
+              loading: false,
+              notice: "网络异常，请点击重试！"
+          })
       }
-    })
-    this.ininData()
-    house.getUserHouse({
-        success: function (houseData) {
-            that.setData({
-                house_id: houseData.id || 0,
-                house_name: houseData.name || ''
-            });
-            that.getActivityTypes()
-        }
     })
   },
 
@@ -204,7 +226,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       loading: true,
       loadingMore: false,
       hasMore: true,
-      lastId: 0
+      lastId: 0,
+      notice: ''
     })
   },
 

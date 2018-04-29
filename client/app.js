@@ -11,5 +11,23 @@ App({
      */
     onLaunch() {
         qcloud.setLoginUrl(config.service.loginUrl);
-    }
+    },
+
+    onShow() {
+        wx.getSetting({
+            success(res) {
+                if (res.authSetting['scope.userInfo'] === false) {
+                    console.log("无权限")
+                    wx.showToast({
+                        title: '请授权应用！',
+                        duration: 2000
+                    })
+
+                    setTimeout(function () {
+                        wx.openSetting()
+                    }, 1000)
+                }
+            }
+        })
+    },
 });

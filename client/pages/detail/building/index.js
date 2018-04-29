@@ -17,25 +17,22 @@ Page({
     activity_id: 0,
     building: 1,
     buildingData: [],
-    floors: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
-    units: [1,2,3,4,5,6]
+    houseConfig: [],
+    floors: [],
+    units: []
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this
     let activity_id = Number(options.id)
     let building = Number(options.building)
-    let buildingData = []
-    let that = this
-    for (let i=1; i<=32; i++) {
-      buildingData[i] = []
-    }
     this.setData({ 
       activity_id: activity_id,
       building: building,
-      buildingData: buildingData
     });
     qcloud.request({
       // 要请求的地址
@@ -52,12 +49,32 @@ Page({
 
       success(result) {
         console.log(result)
-        
+
+        let unitInfo = result.data.data.unitInfo
+        let activityRows = result.data.data.activityRows
         let buildingData = that.data.buildingData
-        result.data.data.forEach(function (item, index) {
+
+        activityRows.house_config.buildings.unshift("?栋")
+
+        activityRows.house_config.floors.forEach(function (item, index) {
+            activityRows.house_config.floors[index] = item.replace(/层/, '')
+        })
+
+        activityRows.house_config.units.forEach(function (item, index) {
+            activityRows.house_config.units[index] = item.replace(/单元/, '')
+        })
+
+        unitInfo.forEach(function (item, index) {
+            buildingData[item.floor] = buildingData[item.floor] || []
             buildingData[item.floor][item.unit] = 1
         })
-        that.setData({ buildingData: buildingData });
+
+        that.setData({ 
+            buildingData: buildingData, 
+            houseConfig: activityRows.house_config,
+            floors: activityRows.house_config.floors,
+            units: activityRows.house_config.units,
+        });
       }
     })
   },

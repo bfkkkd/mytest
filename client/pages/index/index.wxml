@@ -1,7 +1,7 @@
 <import src="../../dist/loadmore/index.wxml" />
 <import src="/dist/tab/index.wxml" />
 <import src="/dist/toptips/index.wxml" />
-
+<zan-noticebar wx:if="{{notice}}" bindtap="onPullDownRefresh" text="{{ notice }}" />
 <view class="container">
   <view class="zan-panel-title title-bg">『{{house_name}}』- 业主力量！
   </view>

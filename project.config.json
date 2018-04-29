@@ -43,6 +43,12 @@
 					"name": "new",
 					"pathName": "pages/new/index",
 					"query": "id=10"
+				},
+				{
+					"id": -1,
+					"name": "数据",
+					"pathName": "pages/detail/building/index",
+					"query": "id=10&building=18"
 				}
 			]
 		}

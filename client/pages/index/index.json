@@ -1,4 +1,9 @@
 { 
   "navigationBarTitleText": "业主助手",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "zan-popup": "/components/zan/popup/index",
+    "zan-button": "/components/zan/btn/index",
+    "zan-noticebar": "/components/zan/noticebar/index"
+}
 }

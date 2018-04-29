@@ -23,7 +23,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     showCenterPopup: false,
     hideToggle: false,
     customInfoLoad: false,
-    houseData: {}
+    houseData: {},
+    notice: ""
   },
 
   initData() {
@@ -33,19 +34,48 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       loadingMore: false,
       loading: false,
       hasMore: true,
+      notice: ""
     })
+  },
+
+  onHide() {
+      this.setData({
+          loading: false,
+      })
   },
 
   onLoad(option) {
     let that = this
     var activity_id = Number(option.id)
     if (activity_id < 1) return
-    let houseData = storage.get('house') || {}
-    that.setData({ 
+    this.setData({
         activity_id: activity_id,
-        houseData: houseData
+        notice: ''
     })
-    this.loadActivity(activity_id)
+    wx.getUserInfo({
+        success: function (res) {
+            let houseData = storage.get('house') || {}
+            that.setData({
+                houseData: houseData
+            })
+            that.loadActivity(activity_id)
+            setTimeout(function () {
+                if (that.data.loading == true) {
+                    that.setData({
+                        loading: false,
+                        notice: "网络异常，请点击重试！"
+                    })
+                }
+            }, 10000)
+        },
+        fail: function (err) {
+            wx.openSetting()
+            that.setData({
+                loading: false,
+                notice: "网络异常，请点击重试！"
+            })
+        }
+    })
   },
 
   loadActivity(activity_id) {
@@ -85,12 +115,18 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
                 hasMore: memberLehgth < 20 ? false : true
               });
             }
-            that.setData({ loading: false })
+            that.setData({ 
+                loading: false,
+                notice: "" 
+            })
             console.log('request success', result);
           },
 
           fail(error) {
-            that.setData({ loading: false })
+            that.setData({ 
+                loading: false,
+                notice: "网络异常，请点击重试！"
+            })
             console.log('request fail', error);
           },
         })

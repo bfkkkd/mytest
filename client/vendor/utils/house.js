@@ -24,6 +24,9 @@ function getUserHouse(opts = {}) {
                 opts.success && opts.success(houseData);
 
             },
+            fail: function (err) {
+                opts.fail && opts.fail(err);
+            },
         })
     }
 

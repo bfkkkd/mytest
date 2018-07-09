@@ -267,9 +267,13 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           }
         })
 
+        if (result.data.data.length) {
+            add_time = result.data.data[result.data.data.length - 1].add_time
+        }
+
         that.setData({ 
           item: activityItem,
-          last_time: result.data.data[result.data.data.length - 1].add_time,
+          last_time: add_time,
           hasMore: result.data.data.length < 20 ? false : true,
           loadingMore: false
         });

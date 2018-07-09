@@ -40,6 +40,24 @@ async function getMemberCount(activityIdArray) {
 
 }
 
+async function getActivityMembersDetail(activityId, limit = 20, start) {
+  let returnData = mysql('activityMember')
+    .leftJoin('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
+    .leftJoin('customerInfo', 'customerInfo.open_id', 'activityMember.open_id')
+    .select('activityMember.open_id', 'cSessionInfo.user_info', 
+      'activityMember.remark', 'activityMember.add_time', 
+      'customerInfo.real_name', 'customerInfo.phone', 
+      'customerInfo.building', 'customerInfo.floor', 
+      'customerInfo.unit', 'customerInfo.verified')
+    .where('activityMember.activity_id', activityId)
+    .andWhere('activityMember.add_time', '<', start)
+    .orderBy('add_time', 'desc')
+    .limit(limit)
+
+  return returnData
+
+}
+
 async function getActivityMembers(activityId, limit = 20, start, open_id = '') {
   let returnData = mysql('activityMember')
     .leftJoin('cSessionInfo', 'cSessionInfo.open_id', 'activityMember.open_id')
@@ -130,6 +148,7 @@ module.exports = {
   getActivityMemberCount,// not include mine
   getMemberCount,
   getActivityMembers,
+  getActivityMembersDetail,
   getJoined,
   getJoinedCount,
   del,

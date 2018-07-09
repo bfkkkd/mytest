@@ -95,6 +95,7 @@ async function get(ctx, next) {
     if (join == 'true') {
 
       let activityItem = await activityObject.getActivityDetail(activity_id)
+      activityItem.house_config = JSON.parse(activityItem.house_config)
       let memberItem = await memberObject.getCustomerInfo(open_id)
       memberItem = memberItem || {}
       let autohrItem = await memberObject.getCustomerInfo(activityItem.open_id)
@@ -197,6 +198,28 @@ async function get(ctx, next) {
 
     }
     ctx.state.data = members
+
+  } else if (act == 'getActivityDetailMembersReport') {
+    var { activity_id, add_time } = ctx.query
+
+    let activityItem = await activityObject.getActivityDetail(activity_id)
+
+    if (activityItem.open_id != open_id && open_id != 'oQ6Ls0ESevsB2FfKwS96AOUUB5xg') {
+      throw new Error("只供作者查看报名情况！")
+    } else {
+      add_time = add_time ? add_time : moment().format().toString(),
+      activity_id = Number(activity_id)
+      let members = await activityObject.getActivityMembersDetail(activity_id, 40, add_time)
+
+      if (members.length > 0) {
+        for (let i = 0; i < members.length; i++) {
+          members[i].user_info = JSON.parse(members[i].user_info)
+        }
+
+      }
+      ctx.state.data = members
+
+    }
 
   } else if (act == 'getCustomerInfo') {
     let customerInfo = await memberObject.getCustomerInfo(open_id)

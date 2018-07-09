@@ -1,0 +1,58 @@
+.flex-row {
+  display:flex;
+  flex-direction:row;
+  min-height: 80rpx;
+  border-bottom:2rpx solid gray;
+}
+
+.flex-col {
+  flex: 0 0 200rpx;
+  text-align: left;
+  overflow: hidden;
+  padding-right: 10rpx;
+  padding-top: 20rpx;
+}
+
+.row-class {
+  margin: 20rpx;
+  height: 20rpx;
+  line-height: 20rpx;
+  vertical-align: middle;
+  color: lightslategrey;
+  font-size: 25rpx;
+  width: 100%;
+}
+
+.col-class {
+  display: inline;
+  margin-right: 10rpx;
+  overflow: hidden;
+}
+
+.demo__item {
+  flex: 1;
+  height: 90rpx;
+  vertical-align: middle;
+}
+
+
+.userinfo-avatar {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+}
+
+.avatar-border {
+  border:3rpx solid;
+  color: green;
+}
+
+.row-data {
+  padding: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  vertical-align: middle;
+}
+
+
+

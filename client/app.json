@@ -4,6 +4,7 @@
         "pages/detail/index",
         "pages/detail/charts/index",
         "pages/detail/building/index",
+        "pages/detail/report/index",
         "pages/new/index",
         "pages/mine/index",
         "pages/myact/index",

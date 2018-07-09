@@ -1,5 +1,6 @@
 const { mysql, config } = require('../qcloud')
 const http = require('axios')
+const util = require('../utils/util.js')
 
 /**
  * 模板消息
@@ -13,11 +14,10 @@ function sendMsg(open_id, form_id, data) {
   let activity = data.activity
   let member = data.member
   let autohr = data.autohr
-  member.unit = member.unit.toString()
-  member.unit = member.unit[1] ? member.unit : '0' + member.unit
-  member.address = (member.building && member.floor && member.unit) ? member.building + "-" + member.floor + member.unit : "请完善个人信息"
+  let houseConfig = activity.house_config
+  member.address = (member.building && member.floor && member.unit) ? util.formatAddress(member.building, member.floor, member.unit, houseConfig) : "请完善个人信息"
 
-  let remrak = data.remark + "(" + member.address + ")"
+  let remrak = data.remark
 
   if (!activity || !member) {
     return -1
@@ -36,27 +36,27 @@ function sendMsg(open_id, form_id, data) {
       touser: open_id,
       form_id: form_id,
       page: "pages/detail/index?id=" + activity.id,
-      template_id: 'FDtQfdNLCejNjmB3Xs60IF9PkhW03-odEyivkwHURSc',
+      template_id: 'FDtQfdNLCejNjmB3Xs60IBDCpV3KprSIKNqsMRCZZR0',
       data: {
         "keyword1": {
           "value": activity.title,
           "color": "#173177"
         },
         "keyword2": {
-          "value": autohr.real_name,
-          "color": "#173177"
+            "value": util.formatAddress(autohr.building, autohr.floor, autohr.unit, houseConfig,) + " " + autohr.real_name,
+            "color": "#173177"
         },
         "keyword3": {
-          "value": remrak,
-          "color": "#ff0033"
+            "value": autohr.phone,
+            "color": "#173177"
         },
         "keyword4": {
-          "value": autohr.phone,
-          "color": "#173177"
+            "value": member.real_name + "(" + member.address + ")",
+            "color": "#173177"
         },
         "keyword5": {
-          "value": autohr.building + "座" + autohr.floor + "层" + autohr.unit + "单元",
-          "color": "#173177"
+            "value": remrak,
+            "color": "#ff0033"
         }
       }
 

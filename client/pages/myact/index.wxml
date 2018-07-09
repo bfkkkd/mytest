@@ -21,6 +21,7 @@
           </view>
         </view>
         <view class="zan-cell__ft">
+          <button bindtap="doReport" data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--primary zan-btn--plain" >报名情况</button>
         <button bindtap="delActivity" data-id="{{item.id}}" data-idx="{{idx}}" class="zan-btn zan-btn--mini zan-btn--warn zan-btn--plain" >删除</button>
         </view>
       </view>

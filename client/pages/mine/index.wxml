@@ -33,7 +33,7 @@
     <view class="zan-cell zan-cell--access">
       <view class="zan-cell__bd">
       <button  style="color:#1aad16; font-size:35rpx;" open-type="contact" session-from="weapp">
-      联系客服
+      联系管理员
       </button>
       </view>
     </view>

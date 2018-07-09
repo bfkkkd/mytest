@@ -101,6 +101,11 @@ Page({
 
   },
 
+  doReport : function(e) {
+    let id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: '../detail/report/index?id=' + id });
+  },
+
   delActivity : function(e) {
     console.log(e)
     let that = this

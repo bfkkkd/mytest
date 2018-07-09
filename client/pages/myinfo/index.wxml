@@ -13,7 +13,7 @@
     <view wx:if="{{inputData.verified}}" style="display:inline-block; float:right; color:green">已认证</view>
     <view wx:else style='display:inline-block; float:right; color:red'>
       未认证
-      <view class="zan-cell__icon zan-icon zan-icon-question" style="color: cornflowerblue" bindtap="showToast" data-content="请与在线客服进行验证！"></view>
+      <view class="zan-cell__icon zan-icon zan-icon-question" style="color: cornflowerblue" bindtap="showToast" data-content="请联系管理员验证！"></view>
     </view>
   </view>
   <custom_info loadData='true'>用户资料组件</custom_info>

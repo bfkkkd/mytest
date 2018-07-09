@@ -51,7 +51,7 @@
         </view>
         </view>
         </view>
-        <view class='zan-font-12' style='height:40rpx'>
+        <view class='zan-font-12' style='height:40rpx;overflow: hidden;line-height: 40rpx;text-overflow: ellipsis'>
         {{member.remark}}
         </view>
       </view>

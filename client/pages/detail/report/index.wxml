@@ -1,0 +1,52 @@
+<import src="/dist/toptips/index.wxml" />
+<import src="/dist/loadmore/index.wxml" />
+<view class="container">
+  <view class="doc-title" style='min-height:50rpx'>
+  {{item.title}}
+  </view>
+
+  <view class='row-data zan-font-14 zan-c-gray-darker' style='padding:50rpx 50rpx 0 40rpx;'>
+    <view class="zan-col zan-col-2" style='text-align: left;vertical-align: middle;' bindtap='goChart'>
+    <image style="width: 48rpx; height: 48rpx;" mode="scaleToFill" src="/images/chart.png"></image>
+    </view>
+    <view class="zan-col zan-col-10" style='text-align: left;vertical-align: middle;' bindtap='goChart'>
+    参与人数：({{item.memberCount.count}})
+    </view>
+  </view>
+  
+  <view class="zan-panel" style="padding:20rpx;'">
+    <view class='flex-row zan-font-14 zan-c-gray-darker' style="font-weight: bold;">
+      <view class='flex-col'>
+        姓名
+      </view>
+      <view class='flex-col'>
+        电话
+      </view>
+      <view class='flex-col'>
+        地址
+      </view>
+      <view class='flex-col'>
+        备注
+      </view>
+    </view>
+    <view class='flex-row zan-font-14 zan-c-gray-darker' wx:for="{{item.members}}" wx:key="id" wx:for-item="member" wx:for-index="idx">
+      <view class='flex-col'>
+        {{member.real_name || member.user_info.nickName}}
+      </view>
+      <view class='flex-col'>
+        {{member.phone}}
+      </view>
+      <view class='flex-col'>
+        {{member.address}}
+      </view>
+      <view class='flex-col'>
+        {{member.remark}}
+      </view>
+    </view>
+  </view>
+  <template wx:if="{{loadingMore}}" is="zan-loadmore" data="{{loading: true}}" />
+
+</view>
+
+
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>

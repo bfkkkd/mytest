@@ -3,7 +3,10 @@
 <import src="/dist/toptips/index.wxml" />
 <zan-noticebar wx:if="{{notice}}" bindtap="onPullDownRefresh" text="{{ notice }}" />
 <view class="container">
-  <view class="zan-panel-title title-bg">『{{house_name}}』- 业主力量！
+  <view class="zan-panel-title title-bg">
+    <view wx:if="{{house_name}}">
+  『{{house_name}}』- 聚集业主力量！
+    </view>
   </view>
   <view>
     <template is="zan-tab" data="{{tab: types, componentId: 'type_id'}}"></template>

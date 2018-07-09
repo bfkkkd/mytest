@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "报名情况",
+  "usingComponents": {
+    "zan-popup": "/components/zan/popup/index",
+    "zan-row": "/components/zan/row/index",
+    "zan-col": "/components/zan/col/index",
+    "zan-panel": "/components/zan/panel/index"
+  }
+}

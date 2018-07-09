@@ -270,7 +270,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         that.setData({ 
           item: activityItem,
           last_time: result.data.data[result.data.data.length - 1].add_time,
-          hasMore: result.data.data.length < 20 ? false : true
+          hasMore: result.data.data.length < 20 ? false : true,
+          loadingMore: false
         });
 
         console.log('request success', result);
@@ -288,14 +289,11 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
 
   onReachBottom: function () {
 
-    if (this.data.loading || !this.data.hasMore) return
+    if (this.data.loadingMore || !this.data.hasMore) return
     this.setData({
       loadingMore: true
     });
     this.getActivityMembers()
-    this.setData({
-      loadingMore: false
-    });
     console.log('to bottom');
   },
 

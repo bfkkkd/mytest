@@ -120,5 +120,5 @@
     </view>
 </view>
 </form>
-
+<login show="{{ showLogin }}" bind:finished="onPullDownRefresh"></login>
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>

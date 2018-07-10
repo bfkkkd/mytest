@@ -1,0 +1,14 @@
+.login{
+    height:400rpx;
+    width: 400rpx;
+    vertical-align: middle;
+    display: table-cell;
+}
+.login-text{
+   color: #1296db;
+   margin-top: -10rpx;
+}
+.login-image{
+    height:200rpx;
+    width:200rpx;
+}

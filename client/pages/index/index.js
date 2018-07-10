@@ -28,6 +28,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     house_id: 0,
     house_name: '',
     notice: "",
+    showLogin: false,
   },
 
   getActivityMembers: function (ids) {
@@ -206,10 +207,10 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
         }, 10000)
       },
       fail (err) {
-          wx.openSetting()
           that.setData({
               loading: false,
-              notice: "网络异常，请点击重试！"
+              showLogin: true,
+              notice: "请授权登录！"
           })
       }
     })
@@ -227,7 +228,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       loadingMore: false,
       hasMore: true,
       lastId: 0,
-      notice: ''
+      notice: '',
+      showLogin: false,
     })
   },
 

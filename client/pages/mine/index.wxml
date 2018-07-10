@@ -40,3 +40,4 @@
   </view>
   
 </view>
+<login show="{{ showLogin }}" bind:finished="onPullDownRefresh"></login>

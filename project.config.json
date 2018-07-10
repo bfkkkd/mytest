@@ -24,12 +24,12 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "个人中心",
-					"pathName": "pages/myinfo/index",
+					"pathName": "pages/mine/index",
 					"query": "id=10"
 				},
 				{

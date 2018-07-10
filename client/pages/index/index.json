@@ -3,6 +3,7 @@
   "enablePullDownRefresh": true,
   "usingComponents": {
     "zan-popup": "/components/zan/popup/index",
+    "login": "/components/login/index",
     "zan-button": "/components/zan/btn/index",
     "zan-noticebar": "/components/zan/noticebar/index"
 }

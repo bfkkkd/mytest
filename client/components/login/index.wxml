@@ -1,0 +1,8 @@
+<zan-popup show="{{ show }}" bindclose="togglePopup">
+    <button open-type="getUserInfo" class="login" bindgetuserinfo="bindGetUserInfo">
+         <image class='login-image' mode="scaleToFill" src="/images/auth.png"></image>
+         <view class='login-text'>
+         点击授权登录
+         </view>
+    </button>
+</zan-popup>

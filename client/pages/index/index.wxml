@@ -38,4 +38,5 @@
   <template wx:elif="{{!loading && !items[0]}}" is="zan-loadmore" data="{{nodata: true}}" />
 
 </view>
+<login show="{{ showLogin }}" bind:finished="onPullDownRefresh"></login>
 <template is="zan-toptips" data="{{ zanTopTips }}"></template>

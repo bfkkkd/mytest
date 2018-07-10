@@ -11,7 +11,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
   data: {
     activity_id: 0,
     message: '',
-    item:{},
+    item: { members : []},
     pending: 0,
     userinfo: {},
     last_time : '',
@@ -24,7 +24,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     hideToggle: false,
     customInfoLoad: false,
     houseData: {},
-    notice: ""
+    notice: "",
+    showLogin: false
   },
 
   initData() {
@@ -34,7 +35,8 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
       loadingMore: false,
       loading: false,
       hasMore: true,
-      notice: ""
+      notice: "",
+      showLogin: false
     })
   },
 
@@ -69,10 +71,9 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
             }, 10000)
         },
         fail: function (err) {
-            wx.openSetting()
             that.setData({
                 loading: false,
-                notice: "网络异常，请点击重试！"
+                showLogin: true,
             })
         }
     })
@@ -149,7 +150,6 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
     let remark = e.detail.value.remark
     var item = this.data.item
     item.joined = e.detail.target.dataset.type == 'del' ? false : true
-
     if (item.joined && item.members[item.memberIdx] && remark == item.members[item.memberIdx].remark) {
       return
     }
@@ -233,7 +233,7 @@ Page(Object.assign({}, Zan.TopTips, Zan.Tab, {
           item: item,
           pending: 0
         });
-        that.showTopTips(error.type)
+        that.showTopTips(error.message)
         console.log('request fail', error);
       },
     })
